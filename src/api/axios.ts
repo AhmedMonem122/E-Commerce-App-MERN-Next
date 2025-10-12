@@ -7,7 +7,8 @@ const api = axios.create({
 // Interceptor to dynamically set token before each request
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token =
+      typeof window !== "undefined" && localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     } else {
