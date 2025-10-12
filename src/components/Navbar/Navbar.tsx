@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 px-10 py-3 border-b border-[#e5e8eb]">
+    <nav className="sticky bg-[#F7FAFC] top-0 z-50 px-10 py-3 border-b border-[#e5e8eb]">
       <div className="flex justify-between items-center">
         <div>
           {" "}
