@@ -4,7 +4,18 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
-    remotePatterns: [new URL("https://images.pexels.com/**")],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/**",
+      },
+    ],
   },
 };
 
