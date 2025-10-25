@@ -1,5 +1,6 @@
 "use client";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -10,9 +11,9 @@ const Navbar = () => {
       <div className="flex justify-between items-center">
         <div>
           {" "}
-          <a href="" className="font-bold text-[18px] leading-6 text-nowrap">
+          <Link href="" className="font-bold text-[18px] leading-6 text-nowrap">
             Tech Haven
-          </a>
+          </Link>
         </div>
 
         <div
@@ -21,17 +22,15 @@ const Navbar = () => {
           }`}
         >
           <div className="flex flex-col md:flex-row md:items-center gap-4 md:mx-auto">
-            <a href="">Home</a>
-            <a href="">Products</a>
-            <a href="">Brands</a>
-            <a href="">Categories</a>
-            <a href="">About</a>
+            <Link href="/">Home</Link>
+            <Link href="/products">Products</Link>
+            <Link href="/brands">Brands</Link>
+            <Link href="/categories">Categories</Link>
+            <Link href="/about">About</Link>
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <a href="" className="">
-              Login
-            </a>
-            <a href="">Register</a>
+            <Link href="/login">Login</Link>
+            <Link href="/register">Register</Link>
           </div>
         </div>
 
