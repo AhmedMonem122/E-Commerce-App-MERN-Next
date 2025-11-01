@@ -15,12 +15,24 @@ export interface TopCheapProduct {
 
 export interface Product {
   _id: string;
-  id: string;
   title: string;
-  images: string[];
-  imageCover: string;
   description: string;
+  price: number;
+  imageCover: string;
+  brand: {
+    _id: string;
+    title: string;
+    createdAt: string;
+  };
   ratingsAverage: number;
   ratingsQuantity: number;
-  price: number;
+  id: string;
+  images: string[];
+  category: {
+    _id: string;
+    title: string;
+    createdAt: string;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
