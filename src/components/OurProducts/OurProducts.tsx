@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import api from "@/api/axios";
+import Link from "next/link";
 
 const fetchProducts = async ({
   search,
@@ -99,37 +100,36 @@ export default function OurProducts() {
               </Card>
             ))
           : products.map((product) => (
-              <Card
-                key={product._id}
-                className="flex flex-col items-center p-6 hover:shadow-xl transition-shadow bg-white rounded-xl"
-              >
-                <CardHeader className="flex flex-col items-center w-full">
-                  <div className="mb-4">
-                    <Image
-                      src={product.imageCover}
-                      alt={product.title}
-                      width={128}
-                      height={128}
-                      className="rounded-lg object-cover border-2 border-gray-200 shadow"
-                      loading="lazy"
-                    />
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-center text-gray-800">
-                    {product.title}
-                  </h3>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-500 mb-2">{product.description}</p>
-                  <div className="flex justify-center gap-2 mb-2">
-                    <span className="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium">
-                      ${product.price}
-                    </span>
-                    <span className="inline-block bg-yellow-100 text-yellow-700 text-xs px-3 py-1 rounded-full font-medium">
-                      {product.ratingsAverage} ★
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
+              <Link key={product._id} href={`/products/${product._id}`}>
+                <Card className="flex flex-col items-center p-6 hover:shadow-xl transition-shadow bg-white rounded-xl">
+                  <CardHeader className="flex flex-col items-center w-full">
+                    <div className="mb-4">
+                      <Image
+                        src={product.imageCover}
+                        alt={product.title}
+                        width={128}
+                        height={128}
+                        className="rounded-lg object-cover border-2 border-gray-200 shadow"
+                        loading="lazy"
+                      />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2 text-center text-gray-800">
+                      {product.title}
+                    </h3>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <p className="text-gray-500 mb-2">{product.description}</p>
+                    <div className="flex justify-center gap-2 mb-2">
+                      <span className="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium">
+                        ${product.price}
+                      </span>
+                      <span className="inline-block bg-yellow-100 text-yellow-700 text-xs px-3 py-1 rounded-full font-medium">
+                        {product.ratingsAverage} ★
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
       </div>
 
