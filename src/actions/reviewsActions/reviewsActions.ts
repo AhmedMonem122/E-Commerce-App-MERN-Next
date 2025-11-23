@@ -103,45 +103,45 @@ export async function reactReviewAction(
   productId: string,
   state: ReactionsFormState | undefined,
   formData: FormData
-) {
+): Promise<ReactionsFormState> {
   const reviewId = formData.get("reviewId") as string | null;
   const reactions = formData.get("reactions") as string | null;
 
   const errors: ReactionsFormState["errors"] = {};
 
-  if (!reactions) {
-    errors.reactions = "Reactions is required";
-  }
-  if (!reviewId) {
-    errors.reviewId = "Review ID is required";
-  }
+  if (!reactions) errors.reactions = "Reactions is required";
+  if (!reviewId) errors.reviewId = "Review ID is required";
 
+  // ❌ Errors found → return early
   if (Object.keys(errors).length > 0) {
     return { errors };
   }
 
+  // ✅ Make API request
   try {
     const res = await axiosInstance.patch(
       `/products/${productId}/reviews/${reviewId}`,
       { reactions }
     );
+
     revalidatePath(`/products/${productId}`);
-    console.log(res.data?.message);
 
-    // toast.success(res.data?.message || "Reaction updated");
-    // return { success: true, message: res.data?.message || "Reaction updated" };
-  } catch (error: unknown) {
+    return {
+      success: true,
+      message: res.data?.message || "Reaction updated successfully",
+    };
+  } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error.response?.data?.message);
-
-      //   toast.error(error.response?.data?.message || error.message);
-      //   return {
-      //     success: false,
-      //     message:
-      //       error.response?.data?.message ||
-      //       error.message ||
-      //       "Failed to update reaction",
-      //   };
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to update reaction",
+      };
     }
   }
+
+  // Fallback (should not happen)
+  return { success: false, message: "Unknown server error occurred" };
 }
