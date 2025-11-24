@@ -1,54 +1,50 @@
 "use client";
+
+import { useActionState, useEffect } from "react";
 import { addOrEditReviewAction } from "@/actions/reviewsActions/reviewsActions";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { useActionState } from "react";
+import { toast } from "sonner";
 
-export type AddEditReviewErrors = {
-  rating?: string;
-  comment?: string;
+export type AddFormState = {
+  errors?: { rating?: string; comment?: string };
+  success?: boolean;
+  message?: string;
 };
 
-export type AddEditFormState = {
-  errors: AddEditReviewErrors;
-};
+const AddReviewForm = ({ productId }: { productId: string }) => {
+  const initialState: AddFormState = {};
 
-const AddEditReviewForm = ({ productId }: { productId: string }) => {
-  const initialState: AddEditFormState = { errors: {} };
-  const addOrEditReviewActionWithId = addOrEditReviewAction.bind(
-    null,
-    productId
-  );
-  const [state, formAction] = useActionState(
-    addOrEditReviewActionWithId,
-    initialState
-  );
+  const actionWithId = addOrEditReviewAction.bind(null, productId);
+
+  const [state, formAction] = useActionState(actionWithId, initialState);
+
+  useEffect(() => {
+    if (state?.success) toast.success(state.message);
+    if (state?.success === false) toast.error(state.message);
+  }, [state]);
 
   return (
     <form action={formAction} className="flex flex-col gap-2">
       <input type="hidden" name="reviewId" value="" />
+
       <div className="flex gap-2 items-center">
         <Input
           type="number"
+          name="rating"
           min={1}
           max={5}
-          name="rating"
-          className="w-20"
           placeholder="Rating"
-          required
+          className="w-20"
         />
         {state?.errors?.rating && (
-          <p className="text-red-500 text-sm">{state?.errors?.rating}</p>
+          <p className="text-red-500 text-sm">{state.errors.rating}</p>
         )}
-        <Textarea
-          name="comment"
-          placeholder="Write your review..."
-          className="flex-1"
-          required
-        />
+
+        <Textarea name="comment" placeholder="Write your review..." />
         {state?.errors?.comment && (
-          <p className="text-red-500 text-sm">{state?.errors?.comment}</p>
+          <p className="text-red-500 text-sm">{state.errors.comment}</p>
         )}
 
         <Button type="submit">Add</Button>
@@ -57,4 +53,4 @@ const AddEditReviewForm = ({ productId }: { productId: string }) => {
   );
 };
 
-export default AddEditReviewForm;
+export default AddReviewForm;
