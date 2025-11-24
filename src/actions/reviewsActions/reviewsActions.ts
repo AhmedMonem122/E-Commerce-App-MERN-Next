@@ -1,10 +1,8 @@
 "use server";
+
 import axiosInstance from "@/api/axios";
-import { AddEditFormState } from "@/components/ProductReviews/AddReviewForm";
-import { ReactionsFormState } from "@/components/ProductReviews/ReactReviewForm";
-import axios from "axios";
 import { revalidatePath } from "next/cache";
-// import { toast } from "sonner";
+import axios from "axios";
 
 export type ActionResponse = {
   success?: boolean;
@@ -12,37 +10,30 @@ export type ActionResponse = {
   errors?: Record<string, string>;
 };
 
+// ───────────────────────────────────────────
+// ADD OR EDIT REVIEW
+// ───────────────────────────────────────────
 export async function addOrEditReviewAction(
   productId: string,
-  state: AddEditFormState | undefined,
+  _state: ActionResponse | undefined,
   formData: FormData
-) {
+): Promise<ActionResponse> {
   const reviewId = formData.get("reviewId") as string | null;
   const rating = formData.get("rating") as string | null;
   const comment = formData.get("comment") as string | null;
 
-  const errors: AddEditFormState["errors"] = {};
+  const errors: Record<string, string> = {};
+  if (!rating) errors.rating = "Rating is required";
+  if (!comment) errors.comment = "Comment is required";
 
-  if (!rating) {
-    errors.rating = "Rating is required";
-  }
-  if (!comment) {
-    errors.comment = "Comment is required";
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return { errors };
-  }
+  if (Object.keys(errors).length > 0) return { success: false, errors };
 
   try {
     let res;
     if (reviewId) {
       res = await axiosInstance.patch(
         `/products/${productId}/reviews/${reviewId}`,
-        {
-          rating,
-          comment,
-        }
+        { rating, comment }
       );
     } else {
       res = await axiosInstance.post(`/products/${productId}/review`, {
@@ -50,81 +41,91 @@ export async function addOrEditReviewAction(
         comment,
       });
     }
-    revalidatePath(`/products/${productId}`);
-    console.log(res.data?.message);
 
-    // toast.success(res.data?.message || "Success");
+    revalidatePath(`/products/${productId}`);
+
+    return {
+      success: true,
+      message: res.data?.message || "Review saved successfully",
+    };
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      console.log(error.response?.data?.message);
-
-      //   toast.error(error.response?.data?.message || error.message);
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to save review",
+      };
     }
+    return { success: false, message: "Unknown server error" };
   }
 }
-
+// ───────────────────────────────────────────
+// DELETE REVIEW
+// ───────────────────────────────────────────
 export async function deleteReviewAction(
   productId: string,
+  _state: ActionResponse | undefined,
   formData: FormData
-) {
+): Promise<ActionResponse> {
   const reviewId = formData.get("reviewId") as string | null;
-  if (!reviewId) {
-    console.log("Review ID is required");
 
-    // toast.error("Review ID is required");
-    // return { success: false, message: "Review ID is required" };
+  if (!reviewId) {
+    return { success: false, message: "Review ID is required" };
   }
+
   try {
     const res = await axiosInstance.delete(
       `/products/${productId}/reviews/${reviewId}`
     );
-    revalidatePath(`/products/${productId}`);
-    console.log(res.data?.message);
 
-    // toast.success(res.data?.message || "Review deleted");
-    // return { success: true, message: res.data?.message || "Review deleted" };
-  } catch (error: unknown) {
+    setTimeout(() => revalidatePath(`/products/${productId}`), 0);
+
+    return {
+      success: true,
+      message: res.data?.message || "Review deleted successfully",
+    };
+  } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error.response?.data?.message);
-
-      //   toast.error(error.response?.data?.message || error.message);
-      // return {
-      //   success: false,
-      //   message:
-      //     error.response?.data?.message ||
-      //     error.message ||
-      //     "Failed to delete review",
-      // };
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to delete review",
+      };
     }
+    return { success: false, message: "Unknown server error occurred" };
   }
 }
 
+// ───────────────────────────────────────────
+// REACT TO REVIEW
+// ───────────────────────────────────────────
 export async function reactReviewAction(
   productId: string,
-  state: ReactionsFormState | undefined,
+  _state: ActionResponse | undefined,
   formData: FormData
-): Promise<ReactionsFormState> {
+): Promise<ActionResponse> {
   const reviewId = formData.get("reviewId") as string | null;
   const reactions = formData.get("reactions") as string | null;
 
-  const errors: ReactionsFormState["errors"] = {};
-
-  if (!reactions) errors.reactions = "Reactions is required";
+  const errors: Record<string, string> = {};
+  if (!reactions) errors.reactions = "Reaction is required";
   if (!reviewId) errors.reviewId = "Review ID is required";
 
-  // ❌ Errors found → return early
   if (Object.keys(errors).length > 0) {
-    return { errors };
+    return { success: false, errors };
   }
 
-  // ✅ Make API request
   try {
     const res = await axiosInstance.patch(
       `/products/${productId}/reviews/${reviewId}`,
       { reactions }
     );
 
-    revalidatePath(`/products/${productId}`);
+    setTimeout(() => revalidatePath(`/products/${productId}`), 0);
 
     return {
       success: true,
@@ -140,8 +141,6 @@ export async function reactReviewAction(
           "Failed to update reaction",
       };
     }
+    return { success: false, message: "Unknown server error occurred" };
   }
-
-  // Fallback (should not happen)
-  return { success: false, message: "Unknown server error occurred" };
 }
