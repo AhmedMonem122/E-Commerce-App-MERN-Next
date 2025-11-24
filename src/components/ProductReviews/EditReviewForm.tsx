@@ -1,18 +1,17 @@
 "use client";
+
+import { useActionState, useEffect } from "react";
 import { addOrEditReviewAction } from "@/actions/reviewsActions/reviewsActions";
 import { Review } from "@/types/productDetails";
-import { useActionState } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { toast } from "sonner";
 
-export type AddEditReviewErrors = {
-  rating?: string;
-  comment?: string;
-};
-
-export type AddEditFormState = {
-  errors: AddEditReviewErrors;
+export type EditFormState = {
+  errors?: { rating?: string; comment?: string };
+  success?: boolean;
+  message?: string;
 };
 
 const EditReviewForm = ({
@@ -22,42 +21,42 @@ const EditReviewForm = ({
   productId: string;
   review: Review;
 }) => {
-  const initialState: AddEditFormState = { errors: {} };
-  const addOrEditReviewActionWithId = addOrEditReviewAction.bind(
-    null,
-    productId
-  );
-  const [state, formAction] = useActionState(
-    addOrEditReviewActionWithId,
-    initialState
-  );
+  const initialState: EditFormState = {};
+
+  const actionWithId = addOrEditReviewAction.bind(null, productId);
+  const [state, formAction] = useActionState(actionWithId, initialState);
+
+  useEffect(() => {
+    // This triggers **after the form action updates state**
+    if (state?.success) toast.success(state.message);
+    if (state?.success === false) toast.error(state.message);
+  }, [state]);
 
   return (
     <form className="space-y-4" action={formAction}>
       <input type="hidden" name="reviewId" value={review._id} />
+
       <Input
         type="number"
+        name="rating"
         min={1}
         max={5}
-        name="rating"
         defaultValue={review.rating}
         className="w-20"
-        placeholder="Rating"
-        required
       />
       {state?.errors?.rating && (
-        <p className="text-red-500 text-sm">{state?.errors?.rating}</p>
+        <p className="text-red-500 text-sm">{state.errors.rating}</p>
       )}
+
       <Textarea
         name="comment"
         defaultValue={review.review}
         placeholder="Edit your review..."
-        className="flex-1"
-        required
       />
       {state?.errors?.comment && (
-        <p className="text-red-500 text-sm">{state?.errors?.comment}</p>
+        <p className="text-red-500 text-sm">{state.errors.comment}</p>
       )}
+
       <Button type="submit" variant="outline" size="sm">
         Update
       </Button>
