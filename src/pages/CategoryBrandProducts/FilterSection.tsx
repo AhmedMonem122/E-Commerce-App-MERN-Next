@@ -18,6 +18,7 @@ export default function FilterSection({ brandId }: { brandId: string }) {
   const [rating, setRating] = useState(searchParams?.get("rating") || "0");
   const [sortBy, setSortBy] = useState(searchParams?.get("sortBy") || "");
 
+  // Fix: Use the correct route for navigation
   const handleFilter = () => {
     const params = new URLSearchParams({
       search,
@@ -26,7 +27,7 @@ export default function FilterSection({ brandId }: { brandId: string }) {
       rating,
       sortBy,
     });
-    router.push(`/brands/${brandId}?${params.toString()}`);
+    router.push(`/categories/${brandId}?${params.toString()}`);
   };
 
   return (
