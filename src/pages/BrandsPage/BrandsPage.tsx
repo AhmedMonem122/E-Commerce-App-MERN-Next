@@ -16,6 +16,7 @@ import Image from "next/image";
 import type { Brand } from "@/types/brand.d";
 import type { Category } from "@/types/category.d";
 import api from "@/api/axios";
+import Link from "next/link";
 
 const PAGE_SIZE = 8;
 
@@ -144,28 +145,30 @@ export default function BrandsPage() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {brands.map((brand) => (
-              <Card
-                key={brand._id}
-                className="hover:shadow-lg transition-shadow h-56 flex flex-col"
-              >
-                <CardContent className="flex flex-col items-center justify-center h-full">
-                  <div className="w-24 h-24 mb-4 relative">
-                    <Image
-                      src={brand.image || "/images/placeholder.png"}
-                      alt={brand.title}
-                      fill
-                      className="object-contain rounded-full bg-white border"
-                      sizes="96px"
-                    />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
-                    {brand.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm text-center line-clamp-2">
-                    {brand.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <Link key={brand._id} href={`/brands/${brand._id}`}>
+                <Card
+                  key={brand._id}
+                  className="hover:shadow-lg transition-shadow h-56 flex flex-col"
+                >
+                  <CardContent className="flex flex-col items-center justify-center h-full">
+                    <div className="w-24 h-24 mb-4 relative">
+                      <Image
+                        src={brand.image || "/images/placeholder.png"}
+                        alt={brand.title}
+                        fill
+                        className="object-contain rounded-full bg-white border"
+                        sizes="96px"
+                      />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
+                      {brand.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm text-center line-clamp-2">
+                      {brand.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
           <div className="flex justify-between items-center mt-8">
