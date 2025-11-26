@@ -16,6 +16,7 @@ import Image from "next/image";
 import type { Category } from "@/types/category.d";
 import type { Brand } from "@/types/brand.d";
 import api from "@/api/axios";
+import Link from "next/link";
 
 const PAGE_SIZE = 8;
 
@@ -120,28 +121,27 @@ export default function CategoriesPage() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
-              <Card
-                key={category._id}
-                className="hover:shadow-lg transition-shadow h-56 flex flex-col"
-              >
-                <CardContent className="flex flex-col items-center justify-center h-full">
-                  <div className="w-24 h-24 mb-4 relative">
-                    <Image
-                      src={category.image || "/images/placeholder.png"}
-                      alt={category.title}
-                      fill
-                      className="object-contain rounded bg-white border"
-                      sizes="96px"
-                    />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
-                    {category.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm text-center line-clamp-2">
-                    {category.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <Link key={category._id} href={`/categories/${category._id}`}>
+                <Card className="hover:shadow-lg transition-shadow h-56 flex flex-col">
+                  <CardContent className="flex flex-col items-center justify-center h-full">
+                    <div className="w-24 h-24 mb-4 relative">
+                      <Image
+                        src={category.image || "/images/placeholder.png"}
+                        alt={category.title}
+                        fill
+                        className="object-contain rounded bg-white border"
+                        sizes="96px"
+                      />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
+                      {category.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm text-center line-clamp-2">
+                      {category.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
           <div className="flex justify-between items-center mt-8">
