@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { Category } from "@/types/category";
 import api from "@/api/axios";
+import Link from "next/link";
 
 // Helper to fetch categories server-side
 async function getCategories() {
@@ -51,32 +52,31 @@ export default async function HomeCategories() {
         {/* Categories */}
         {categories &&
           categories.map((category: Category) => (
-            <Card
-              key={category._id}
-              className="flex flex-col items-center p-6 hover:shadow-xl transition-shadow bg-white rounded-xl"
-            >
-              <CardHeader className="flex flex-col items-center w-full">
-                <div className="mb-4">
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    width={96}
-                    height={96}
-                    className="rounded-full object-cover border-2 border-gray-200 shadow"
-                    loading="lazy"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-center text-gray-800">
-                  {category.title}
-                </h3>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-gray-500 mb-4">{category.description}</p>
-                <span className="inline-block bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium">
-                  {category.products.length} Products
-                </span>
-              </CardContent>
-            </Card>
+            <Link key={category._id} href={`/categories/${category._id}`}>
+              <Card className="flex flex-col items-center p-6 hover:shadow-xl transition-shadow bg-white rounded-xl">
+                <CardHeader className="flex flex-col items-center w-full">
+                  <div className="mb-4">
+                    <Image
+                      src={category.image}
+                      alt={category.title}
+                      width={96}
+                      height={96}
+                      className="rounded-full object-cover border-2 border-gray-200 shadow"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-center text-gray-800">
+                    {category.title}
+                  </h3>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-gray-500 mb-4">{category.description}</p>
+                  <span className="inline-block bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full font-medium">
+                    {category.products.length} Products
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
       </div>
     </section>
