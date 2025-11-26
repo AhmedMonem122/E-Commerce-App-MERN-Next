@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { TopCheapProduct } from "@/types/product";
 import Image from "next/image";
 import api from "@/api/axios";
+import Link from "next/link";
 
 export default async function BestDeals() {
   const res = await api.get("/products/top-5-cheap");
@@ -25,36 +26,35 @@ export default async function BestDeals() {
         {/* Products */}
         {products &&
           products.map((product: TopCheapProduct) => (
-            <Card
-              key={product._id}
-              className="flex flex-col items-center hover:shadow-lg transition-shadow"
-            >
-              <CardHeader className="w-full">
-                <h3 className="text-lg font-semibold mb-2 text-center">
-                  {product.title}
-                </h3>
-              </CardHeader>
-              <CardContent>
-                {product.imageCover ? (
-                  <Image
-                    src={product?.imageCover}
-                    alt={product.title}
-                    width={300}
-                    height={300}
-                    className="h-32 w-32 object-cover rounded mb-4"
-                    loading="lazy"
-                  />
-                ) : (
-                  <p>No Image Available</p>
-                )}
-                <div className="flex justify-between items-center">
-                  <div className="text-xl font-bold text-green-600">
-                    ${product.price}
+            <Link key={product._id} href={`/products/${product._id}`}>
+              <Card className="flex flex-col items-center hover:shadow-lg transition-shadow">
+                <CardHeader className="w-full">
+                  <h3 className="text-lg font-semibold mb-2 text-center">
+                    {product.title}
+                  </h3>
+                </CardHeader>
+                <CardContent>
+                  {product.imageCover ? (
+                    <Image
+                      src={product?.imageCover}
+                      alt={product.title}
+                      width={300}
+                      height={300}
+                      className="h-32 w-32 object-cover rounded mb-4"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <p>No Image Available</p>
+                  )}
+                  <div className="flex justify-between items-center">
+                    <div className="text-xl font-bold text-green-600">
+                      ${product.price}
+                    </div>
+                    <Badge variant="secondary">Best Deal</Badge>
                   </div>
-                  <Badge variant="secondary">Best Deal</Badge>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
 
         {/* Skeleton Loading (SSR fallback, optional) */}
