@@ -146,10 +146,7 @@ export default function BrandsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {brands.map((brand) => (
               <Link key={brand._id} href={`/brands/${brand._id}`}>
-                <Card
-                  key={brand._id}
-                  className="hover:shadow-lg transition-shadow h-56 flex flex-col"
-                >
+                <Card className="hover:shadow-lg transition-shadow h-56 flex flex-col">
                   <CardContent className="flex flex-col items-center justify-center h-full">
                     <div className="w-24 h-24 mb-4 relative">
                       <Image
