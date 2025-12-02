@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { Category } from "@/types/category";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 import Link from "next/link";
 
 // Helper to fetch categories server-side
