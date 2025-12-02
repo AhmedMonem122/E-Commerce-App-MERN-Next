@@ -1,7 +1,10 @@
 "use server";
+
 import api from "@/api/axios";
 import axios from "axios";
 import { z } from "zod";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -13,7 +16,7 @@ const loginSchema = z.object({
 export type LoginFormState = {
   success?: boolean;
   message?: string;
-  validationErrors?: { [key: string]: string };
+  validationErrors?: Record<string, string>;
 };
 
 export async function loginAction(
@@ -23,42 +26,62 @@ export async function loginAction(
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const parse = loginSchema.safeParse({ email, password });
-  if (!parse.success) {
-    const validationErrors: { [key: string]: string } = {};
-    parse.error.issues.forEach((err) => {
-      const key = err.path[0];
-      if (typeof key === "string") {
-        validationErrors[key] = err.message;
+  // --- Input validation ---
+  const parsed = loginSchema.safeParse({ email, password });
+  if (!parsed.success) {
+    const validationErrors: Record<string, string> = {};
+
+    parsed.error.issues.forEach((issue) => {
+      const pathKey = issue.path[0];
+
+      // Ensure the key is a string
+      if (typeof pathKey === "string") {
+        validationErrors[pathKey] = issue.message;
       }
     });
+
     return { success: false, validationErrors };
   }
 
   try {
+    // --- Call backend API ---
     const res = await api.post(
       "/users/signin",
       { email, password },
       { headers: { "Content-Type": "application/json" } }
     );
-    return {
-      success: true,
-      message:
-        res.data?.status === "success" ? "Login successful!" : "Login failed.",
-    };
+
+    const token = res.data?.token;
+    if (!token) {
+      return { success: false, message: "No token received from server." };
+    }
+
+    // --- Save token in cookies ---
+    const cookieStore = await cookies();
+    cookieStore.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
   } catch (error) {
+    // --- Axios error handling ---
     if (axios.isAxiosError(error)) {
       return {
         success: false,
         message:
-          error.response?.data?.message ||
-          error.message ||
-          "Failed to delete review",
+          error.response?.data?.message || error.message || "Login failed.",
       };
     }
+
+    // --- Any other unexpected error ---
     return {
       success: false,
       message: "Something went wrong. Please try again.",
     };
   }
+
+  // --- Redirect MUST be outside try/catch ---
+  redirect("/");
 }
