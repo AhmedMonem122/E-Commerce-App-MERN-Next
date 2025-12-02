@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import CategoryBrandProducts from "@/pages/CategoryBrandProducts/CategoryBrandProducts";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 
 export async function generateMetadata({
   params,
