@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Suspense } from "react";
 import ProductReviews from "@/components/ProductReviews/ProductReviews";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 import { Brand } from "@/types/brand";
 import { Category } from "@/types/category";
 import { ProductDetails } from "@/types/productDetails";
