@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { TopCheapProduct } from "@/types/product";
 import Image from "next/image";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 import Link from "next/link";
 
 export default async function BestDeals() {
