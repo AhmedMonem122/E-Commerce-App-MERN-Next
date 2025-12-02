@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import type { Brand } from "@/types/brand.d";
 import type { Category } from "@/types/category.d";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 import Link from "next/link";
 
 const PAGE_SIZE = 8;
