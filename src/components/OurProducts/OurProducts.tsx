@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import Image from "next/image";
-import api from "@/api/axios";
+import api from "@/api/apiClient";
 import Link from "next/link";
 
 const fetchProducts = async ({
