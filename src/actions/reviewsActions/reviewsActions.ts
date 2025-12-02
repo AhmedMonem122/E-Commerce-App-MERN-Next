@@ -1,6 +1,6 @@
 "use server";
 
-import axiosInstance from "@/api/axios";
+import apiServer from "@/api/apiServer";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 
@@ -27,7 +27,7 @@ export async function addOrEditReviewAction(
   if (!comment) errors.comment = "Comment is required";
 
   if (Object.keys(errors).length > 0) return { success: false, errors };
-
+  const axiosInstance = apiServer();
   try {
     let res;
     if (reviewId) {
@@ -74,7 +74,7 @@ export async function deleteReviewAction(
   if (!reviewId) {
     return { success: false, message: "Review ID is required" };
   }
-
+  const axiosInstance = apiServer();
   try {
     const res = await axiosInstance.delete(
       `/products/${productId}/reviews/${reviewId}`
@@ -118,7 +118,7 @@ export async function reactReviewAction(
   if (Object.keys(errors).length > 0) {
     return { success: false, errors };
   }
-
+  const axiosInstance = apiServer();
   try {
     const res = await axiosInstance.patch(
       `/products/${productId}/reviews/${reviewId}`,
