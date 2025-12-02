@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { addOrEditReviewAction } from "@/actions/reviewsActions/reviewsActions";
+import { addOrEditReviewAction } from "@/app/actions/reviewsActions/reviewsActions";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { reactReviewAction } from "@/actions/reviewsActions/reviewsActions";
+import { reactReviewAction } from "@/app/actions/reviewsActions/reviewsActions";
 import { Button } from "../ui/button";
 import { Review } from "@/types/productDetails";
 import { toast } from "sonner";

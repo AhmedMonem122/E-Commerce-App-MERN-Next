@@ -4,7 +4,7 @@ import { useActionState, useEffect } from "react";
 import {
   deleteReviewAction,
   ActionResponse,
-} from "@/actions/reviewsActions/reviewsActions";
+} from "@/app/actions/reviewsActions/reviewsActions";
 import { Button } from "../ui/button";
 import { Review } from "@/types/productDetails";
 import { toast } from "sonner";
