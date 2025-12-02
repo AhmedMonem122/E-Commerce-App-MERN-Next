@@ -1,6 +1,6 @@
 "use server";
 
-import api from "@/api/axios";
+import apiServer from "@/api/apiServer";
 import axios from "axios";
 import { z } from "zod";
 import { cookies } from "next/headers";
@@ -44,6 +44,7 @@ export async function loginAction(
   }
 
   try {
+    const api = apiServer();
     // --- Call backend API ---
     const res = await api.post(
       "/users/signin",
