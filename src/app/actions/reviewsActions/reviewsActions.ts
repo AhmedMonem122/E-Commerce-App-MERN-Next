@@ -1,6 +1,6 @@
 "use server";
 
-import apiServer from "@/app/lib/apiServer";
+import apiServer from "@/app/lib/apiServer.server";
 import { revalidatePath } from "next/cache";
 import axios from "axios";
 
