@@ -1,6 +1,6 @@
 "use server";
 
-import apiServer from "@/api/apiServer";
+import apiServer from "@/app/lib/apiServer";
 import axios from "axios";
 import { z } from "zod";
 import { cookies } from "next/headers";
