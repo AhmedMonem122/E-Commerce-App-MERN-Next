@@ -44,7 +44,7 @@ export async function loginAction(
   }
 
   try {
-    const api = apiServer();
+    const api = await apiServer();
     // --- Call backend API ---
     const res = await api.post(
       "/users/signin",

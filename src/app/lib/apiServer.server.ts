@@ -2,7 +2,7 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export default function apiServer() {
+export default async function apiServer() {
   const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   });
