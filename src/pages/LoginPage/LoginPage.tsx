@@ -23,16 +23,24 @@ const LoginPage = () => {
   }, [state?.message, state?.success]);
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 px-4">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-50 to-white py-12 px-4">
       <form
         action={formAction}
-        className="bg-white shadow-xl rounded-lg p-8 w-full max-w-md space-y-6"
+        className="w-full max-w-lg bg-white shadow-lg rounded-2xl p-8 sm:p-10 space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-primary mb-2">
-          Sign In
-        </h2>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 text-center">
+          Welcome Back
+        </h1>
+        <p className="text-sm text-slate-500 text-center -mt-2 mb-6">
+          Sign in to continue to your dashboard.
+        </p>
+
+        {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Email
           </label>
           <Input
@@ -40,19 +48,24 @@ const LoginPage = () => {
             name="email"
             type="email"
             placeholder="you@example.com"
-            className={`w-full ${
+            className={`rounded-xl px-4 py-3 ${
               state?.validationErrors?.email ? "border-red-500" : ""
             }`}
             autoComplete="email"
           />
           {state?.validationErrors?.email && (
-            <p className="text-xs text-red-500 mt-1">
+            <p className="mt-1 text-xs text-red-600">
               {state.validationErrors.email}
             </p>
           )}
         </div>
+
+        {/* Password */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-1">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
             Password
           </label>
           <div className="relative">
@@ -61,14 +74,15 @@ const LoginPage = () => {
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
-              className={`w-full pr-10 ${
+              className={`rounded-xl px-4 py-3 pr-10 ${
                 state?.validationErrors?.password ? "border-red-500" : ""
               }`}
               autoComplete="current-password"
             />
+
             <button
               type="button"
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
               tabIndex={-1}
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Hide password" : "Show password"}
@@ -76,13 +90,23 @@ const LoginPage = () => {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
+
           {state?.validationErrors?.password && (
-            <p className="text-xs text-red-500 mt-1">
+            <p className="mt-1 text-xs text-red-600">
               {state.validationErrors.password}
             </p>
           )}
         </div>
+
+        {/* Submit */}
         <SubmitLoginButton />
+
+        <p className="text-sm text-slate-500 text-center pt-3">
+          Don’t have an account?{" "}
+          <a href="/register" className="text-indigo-600 hover:underline">
+            Create one
+          </a>
+        </p>
       </form>
     </section>
   );
