@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -9,65 +8,85 @@ import Link from "next/link";
 
 export default async function BestDeals() {
   const res = await api.get("/products/top-5-cheap");
-
-  const products = res.data.data.products as TopCheapProduct[];
+  const products = res.data?.data?.products as TopCheapProduct[];
 
   return (
-    <section className=" mx-auto px-9 py-8">
-      <h2 className="text-3xl font-bold mb-6 text-center">Best Deals</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <section className="container mx-auto px-6 lg:px-12 py-12">
+      {/* Title */}
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent drop-shadow-md">
+          Best Deals
+        </h2>
+        <p className="text-muted-foreground mt-2 text-sm md:text-base">
+          Top picks with unbeatable prices — updated daily.
+        </p>
+      </div>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {/* Error State */}
         {!products && (
-          <div className="col-span-full text-center text-red-500">
+          <div className="col-span-full text-center text-red-500 text-lg">
             Failed to load best deals.
           </div>
         )}
 
-        {/* Products */}
+        {/* Product Cards */}
         {products &&
-          products.map((product: TopCheapProduct) => (
+          products.map((product) => (
             <Link key={product._id} href={`/products/${product._id}`}>
-              <Card className="flex flex-col items-center hover:shadow-lg transition-shadow">
-                <CardHeader className="w-full">
-                  <h3 className="text-lg font-semibold mb-2 text-center">
+              <Card className="group cursor-pointer rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                {/* Product Image */}
+                <div className="relative w-full h-48 overflow-hidden">
+                  <Image
+                    src={product.imageCover}
+                    alt={product.title}
+                    fill
+                    sizes="100%"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+
+                  {/* Best Deal Badge */}
+                  <Badge className="absolute top-3 left-3 bg-green-600 text-white shadow-lg">
+                    Best Deal
+                  </Badge>
+                </div>
+
+                {/* Card Content */}
+                <CardHeader className="px-4 pt-4 pb-2">
+                  <h3 className="font-semibold text-sm md:text-base line-clamp-2 text-center">
                     {product.title}
                   </h3>
                 </CardHeader>
-                <CardContent>
-                  {product.imageCover ? (
-                    <Image
-                      src={product?.imageCover}
-                      alt={product.title}
-                      width={300}
-                      height={300}
-                      className="h-32 w-32 object-cover rounded mb-4"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <p>No Image Available</p>
-                  )}
-                  <div className="flex justify-between items-center">
-                    <div className="text-xl font-bold text-green-600">
+
+                <CardContent className="pb-4 px-4">
+                  <div className="flex justify-between items-center mt-3">
+                    <p className="text-lg font-bold text-primary">
                       ${product.price}
-                    </div>
-                    <Badge variant="secondary">Best Deal</Badge>
+                    </p>
                   </div>
                 </CardContent>
               </Card>
             </Link>
           ))}
 
-        {/* Skeleton Loading (SSR fallback, optional) */}
+        {/* Skeleton Loading */}
         {!products &&
           Array.from({ length: 5 }).map((_, i) => (
-            <Card key={i} className="flex flex-col items-center">
-              <CardHeader>
-                <Skeleton className="h-8 w-20" />
+            <Card
+              key={i}
+              className="rounded-xl overflow-hidden border shadow-sm"
+            >
+              <div className="w-full h-48">
+                <Skeleton className="h-full w-full" />
+              </div>
+
+              <CardHeader className="px-4 pt-4 pb-2">
+                <Skeleton className="h-5 w-32" />
               </CardHeader>
-              <CardContent>
-                <Skeleton className="h-32 w-32 mb-4" />
-                <Skeleton className="h-6 w-24 mb-2" />
-                <Skeleton className="h-4 w-16" />
+
+              <CardContent className="px-4 pb-4">
+                <Skeleton className="h-6 w-20" />
               </CardContent>
             </Card>
           ))}
