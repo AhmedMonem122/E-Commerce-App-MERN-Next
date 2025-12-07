@@ -22,13 +22,12 @@ const ReactReviewForm = ({
   reaction: string;
 }) => {
   const initialState: ReactionsFormState = {};
-
-  const actionWithId = reactReviewAction.bind(null, productId);
-  const [state, formAction] = useActionState(actionWithId, initialState);
+  const action = reactReviewAction.bind(null, productId);
+  const [state, formAction] = useActionState(action, initialState);
 
   useEffect(() => {
     if (state?.success) toast.success(state.message);
-    if (state?.success === false) toast.error(state.message);
+    if (!state?.success && state?.message) toast.error(state.message);
   }, [state]);
 
   return (
@@ -37,19 +36,12 @@ const ReactReviewForm = ({
       <input type="hidden" name="reactions" value={reaction} />
 
       <Button
-        variant={review.reactions === reaction ? "default" : "outline"}
         size="sm"
-        type="submit"
+        variant={review.reactions === reaction ? "default" : "outline"}
+        className="rounded-full px-4"
       >
         {reaction}
       </Button>
-
-      {state?.errors?.reactions && (
-        <p className="text-red-500 text-sm">{state.errors.reactions}</p>
-      )}
-      {state?.errors?.reviewId && (
-        <p className="text-red-500 text-sm">{state.errors.reviewId}</p>
-      )}
     </form>
   );
 };
