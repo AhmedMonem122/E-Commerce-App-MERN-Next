@@ -17,6 +17,7 @@ import type { Brand } from "@/types/brand.d";
 import type { Category } from "@/types/category.d";
 import api from "@/api/apiClient";
 import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PAGE_SIZE = 8;
 
@@ -68,121 +69,144 @@ export default function BrandsPage() {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10">
-      <div className="flex flex-col md:flex-row md:items-end gap-4 mb-8">
-        <div className="flex-1">
-          <Input
-            placeholder="Search brands..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="w-full"
-          />
-        </div>
-        <div className="w-full md:w-48">
-          <Select
-            value={category ? category : undefined}
-            onValueChange={(value) => {
-              setCategory(value === "all" ? "" : value);
-              setPage(1);
-            }}
-            disabled={loadingCategories}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {categories?.data?.categories?.map((cat: Category) => (
-                <SelectItem key={cat._id} value={cat._id}>
-                  {cat.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="w-full md:w-48">
-          <Select
-            value={sort}
-            onValueChange={(value) => {
-              setSort(value);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="default">Default</SelectItem>
-              <SelectItem value="title">Title (A-Z)</SelectItem>
-              <SelectItem value="-title">Title (Z-A)</SelectItem>
-              <SelectItem value="createdAt">Newest</SelectItem>
-              <SelectItem value="-createdAt">Oldest</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+    <section className="max-w-7xl mx-auto px-4 py-12">
+      {/* HEADER */}
+      <h1 className="text-3xl font-bold mb-6 text-center md:text-left">
+        Browse <span className="text-primary">Brands</span>
+      </h1>
+
+      {/* FILTER BAR */}
+      <div className="bg-white/70 backdrop-blur-md border shadow-sm p-4 rounded-xl mb-10 flex flex-col md:flex-row gap-4">
+        <Input
+          placeholder="Search brands..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          className="flex-1"
+        />
+
+        {/* CATEGORY FILTER */}
+        <Select
+          value={category ? category : undefined}
+          onValueChange={(value) => {
+            setCategory(value === "all" ? "" : value);
+            setPage(1);
+          }}
+          disabled={loadingCategories}
+        >
+          <SelectTrigger className="md:w-56">
+            <SelectValue placeholder="All Categories" />
+          </SelectTrigger>
+          <SelectContent className="max-h-64">
+            <SelectItem value="all">All Categories</SelectItem>
+            {categories?.data?.categories?.map((cat: Category) => (
+              <SelectItem key={cat._id} value={cat._id}>
+                {cat.title}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        {/* SORT */}
+        <Select
+          value={sort}
+          onValueChange={(value) => {
+            setSort(value);
+            setPage(1);
+          }}
+        >
+          <SelectTrigger className="md:w-56">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Default</SelectItem>
+            <SelectItem value="title">Title (A-Z)</SelectItem>
+            <SelectItem value="-title">Title (Z-A)</SelectItem>
+            <SelectItem value="createdAt">Newest</SelectItem>
+            <SelectItem value="-createdAt">Oldest</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {isLoading ? (
+      {/* LOADING SKELETON */}
+      {isLoading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-            <Card key={i} className="animate-pulse h-56">
-              <CardContent className="flex flex-col items-center justify-center h-full">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mb-4" />
-                <div className="h-4 w-2/3 bg-gray-200 rounded mb-2" />
-                <div className="h-3 w-1/2 bg-gray-100 rounded" />
+            <Card key={i} className="p-5 animate-pulse">
+              <CardContent className="flex flex-col items-center justify-center space-y-4">
+                <Skeleton className="w-24 h-24 rounded-full" />
+                <Skeleton className="h-4 w-2/3" />
+                <Skeleton className="h-3 w-1/2" />
               </CardContent>
             </Card>
           ))}
         </div>
-      ) : isError ? (
-        <div className="text-center text-red-500 py-10">
-          Failed to load brands.
+      )}
+
+      {/* ERROR */}
+      {isError && (
+        <div className="text-center text-red-500 py-12 text-lg">
+          Failed to load brands. Please try again.
         </div>
-      ) : (
+      )}
+
+      {/* LIST */}
+      {!isLoading && !isError && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {brands.map((brand) => (
-              <Link key={brand._id} href={`/brands/${brand._id}`}>
-                <Card className="hover:shadow-lg transition-shadow h-56 flex flex-col">
-                  <CardContent className="flex flex-col items-center justify-center h-full">
-                    <div className="w-24 h-24 mb-4 relative">
-                      <Image
-                        src={brand.image || "/images/placeholder.png"}
-                        alt={brand.title}
-                        fill
-                        className="object-contain rounded-full bg-white border"
-                        sizes="96px"
-                      />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
-                      {brand.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm text-center line-clamp-2">
-                      {brand.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-          <div className="flex justify-between items-center mt-8">
+          {brands.length === 0 ? (
+            <div className="text-center py-16 text-gray-500 text-lg">
+              No brands found.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {brands.map((brand) => (
+                <Link key={brand._id} href={`/brands/${brand._id}`}>
+                  <Card className="h-60 group relative overflow-hidden border hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <CardContent className="flex flex-col items-center justify-center p-6 text-center">
+                      <div className="w-24 h-24 relative mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <Image
+                          src={brand.image || "/images/placeholder.png"}
+                          alt={brand.title}
+                          fill
+                          className="object-contain rounded-full bg-white border"
+                        />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                        {brand.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+                        {brand.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* PAGINATION */}
+          <div className="flex justify-center items-center gap-4 mt-10">
             <Button
               variant="outline"
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
+              className="px-6"
             >
               Previous
             </Button>
-            <span className="text-gray-700">
-              Page {page} of {totalPages || 1}
+
+            <span className="text-gray-700 text-sm">
+              Page <span className="font-semibold text-primary">{page}</span> of{" "}
+              {totalPages || 1}
             </span>
+
             <Button
               variant="outline"
               disabled={page === totalPages || totalPages === 0}
               onClick={() => setPage(page + 1)}
+              className="px-6"
             >
               Next
             </Button>
