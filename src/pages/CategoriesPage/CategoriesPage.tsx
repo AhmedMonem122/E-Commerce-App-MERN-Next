@@ -13,10 +13,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import type { Category } from "@/types/category.d";
-import type { Brand } from "@/types/brand.d";
 import api from "@/api/apiClient";
 import Link from "next/link";
+import type { Category } from "@/types/category";
+import type { Brand } from "@/types/brand";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const PAGE_SIZE = 8;
 
@@ -35,6 +36,7 @@ const fetchCategories = async ({
     page,
     limit: PAGE_SIZE,
   };
+
   const { data } = await api.get("/categories", { params });
   return data;
 };
@@ -64,9 +66,22 @@ export default function CategoriesPage() {
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-10">
-      <div className="flex flex-col md:flex-row md:items-end gap-4 mb-8">
+    <section className="max-w-7xl mx-auto px-4 py-10">
+      {/* Page Title */}
+      <h1
+        className="text-4xl md:text-5xl font-extrabold text-center mb-10 
+                     bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
+      >
+        Explore Categories
+      </h1>
+
+      {/* Filters */}
+      <div className="flex flex-col md:flex-row items-stretch md:items-end gap-4 mb-10">
+        {/* Search */}
         <div className="flex-1">
+          <label className="text-sm font-medium text-gray-600 mb-1 block">
+            Search Categories
+          </label>
           <Input
             placeholder="Search categories..."
             value={search}
@@ -74,10 +89,15 @@ export default function CategoriesPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full"
+            className="transition-all focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-        <div className="w-full md:w-48">
+
+        {/* Brand Filter */}
+        <div className="w-full md:w-64">
+          <label className="text-sm font-medium text-gray-600 mb-1 block">
+            Filter by Brand
+          </label>
           <Select
             value={brand ? brand : undefined}
             onValueChange={(value) => {
@@ -86,7 +106,7 @@ export default function CategoriesPage() {
             }}
             disabled={loadingBrands}
           >
-            <SelectTrigger>
+            <SelectTrigger className="transition-all">
               <SelectValue placeholder="All Brands" />
             </SelectTrigger>
             <SelectContent>
@@ -101,66 +121,90 @@ export default function CategoriesPage() {
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-            <Card key={i} className="animate-pulse h-56">
-              <CardContent className="flex flex-col items-center justify-center h-full">
-                <div className="w-24 h-24 bg-gray-200 rounded mb-4" />
-                <div className="h-4 w-2/3 bg-gray-200 rounded mb-2" />
-                <div className="h-3 w-1/2 bg-gray-100 rounded" />
-              </CardContent>
+            <Card key={i} className="p-4 space-y-4">
+              <Skeleton className="h-32 w-full rounded-lg" />
+              <Skeleton className="h-5 w-1/2" />
+              <Skeleton className="h-4 w-3/4" />
             </Card>
           ))}
         </div>
-      ) : isError ? (
-        <div className="text-center text-red-500 py-10">
-          Failed to load categories.
+      )}
+
+      {/* Error */}
+      {isError && (
+        <div className="text-center text-red-500 text-lg py-10 font-semibold">
+          ❌ Failed to load categories. Please try again later.
         </div>
-      ) : (
+      )}
+
+      {/* Categories */}
+      {!isLoading && !isError && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
-              <Link key={category._id} href={`/categories/${category._id}`}>
-                <Card className="hover:shadow-lg transition-shadow h-56 flex flex-col">
-                  <CardContent className="flex flex-col items-center justify-center h-full">
-                    <div className="w-24 h-24 mb-4 relative">
-                      <Image
-                        src={category.image || "/images/placeholder.png"}
-                        alt={category.title}
-                        fill
-                        className="object-contain rounded bg-white border"
-                        sizes="96px"
-                      />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1 text-center">
-                      {category.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm text-center line-clamp-2">
-                      {category.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-          <div className="flex justify-between items-center mt-8">
+          {categories.length === 0 ? (
+            <p className="text-center text-gray-500 text-lg py-10">
+              No categories found.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {categories.map((category) => (
+                <Link
+                  key={category._id}
+                  href={`/categories/${category._id}`}
+                  className="group"
+                >
+                  <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white rounded-xl">
+                    <CardContent className="p-6 flex flex-col items-center text-center">
+                      <div className="relative w-28 h-28 mb-4">
+                        <Image
+                          src={category.image || "/images/placeholder.png"}
+                          alt={category.title}
+                          fill
+                          className="object-contain rounded-md p-2 
+                                     group-hover:scale-105 transition-transform"
+                          sizes="128px"
+                        />
+                      </div>
+
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">
+                        {category.title}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 line-clamp-2">
+                        {category.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          <div className="flex justify-center items-center gap-4 mt-10">
             <Button
               variant="outline"
               disabled={page === 1}
               onClick={() => setPage(page - 1)}
+              className="rounded-full px-6"
             >
-              Previous
+              ← Previous
             </Button>
-            <span className="text-gray-700">
+
+            <span className="text-gray-700 font-medium">
               Page {page} of {totalPages || 1}
             </span>
+
             <Button
               variant="outline"
               disabled={page === totalPages || totalPages === 0}
               onClick={() => setPage(page + 1)}
+              className="rounded-full px-6"
             >
-              Next
+              Next →
             </Button>
           </div>
         </>
