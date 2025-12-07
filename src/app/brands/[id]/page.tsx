@@ -5,12 +5,13 @@ import api from "@/api/apiClient";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  // Fetch brand name for dynamic title
-  const res = await api.get(`/brands/${params.id}`);
+  const { id } = await params;
 
+  const res = await api.get(`/brands/${id}`);
   const brandName = res?.data?.data?.brand?.title || "Brand";
+
   return {
     title: brandName,
     description: `Shop products from ${brandName} with best prices and ratings.`,
@@ -47,14 +48,15 @@ export default async function BrandPage({
   params,
   searchParams,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   searchParams: Record<string, string>;
 }) {
-  const productsData = await fetchBrandProducts(params.id, searchParams);
+  const { id } = await params;
+  const productsData = await fetchBrandProducts(id, searchParams);
 
   return (
     <main className="container mx-auto py-8">
-      <CategoryBrandProducts brandId={params.id} productsData={productsData} />
+      <CategoryBrandProducts brandId={id} productsData={productsData} />
     </main>
   );
 }
