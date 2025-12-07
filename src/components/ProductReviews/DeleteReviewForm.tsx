@@ -17,19 +17,19 @@ const DeleteReviewForm = ({
   review: Review;
 }) => {
   const initialState: ActionResponse = {};
-
-  const actionWithId = deleteReviewAction.bind(null, productId);
-  const [state, formAction] = useActionState(actionWithId, initialState);
+  const action = deleteReviewAction.bind(null, productId);
+  const [state, formAction] = useActionState(action, initialState);
 
   useEffect(() => {
-    if (state?.success) toast.success(state.message);
+    if (state?.success) toast.success("Review deleted!");
     if (state?.success === false) toast.error(state.message);
   }, [state]);
 
   return (
     <form action={formAction}>
       <input type="hidden" name="reviewId" value={review._id} />
-      <Button variant="destructive" size="sm" type="submit">
+
+      <Button variant="destructive" size="sm" className="px-4">
         Delete
       </Button>
     </form>
