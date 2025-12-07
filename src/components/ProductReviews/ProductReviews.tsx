@@ -17,42 +17,46 @@ export default function ProductReviews({
   product,
 }: ProductReviewsProps) {
   return (
-    <section className="space-y-6">
-      {/* ✅ Render Toaster once for the whole page */}
+    <section className="space-y-8 py-10">
       <Toaster position="bottom-right" />
 
-      <h2 className="text-2xl font-bold">Customer Reviews</h2>
+      <h2 className="text-3xl font-bold tracking-tight">Customer Reviews</h2>
 
-      {/* Add Review Form */}
-      <div className="mb-6">
+      {/* 💬 Add Review */}
+      <Card className="shadow-sm border rounded-xl p-6 bg-white">
+        <h3 className="text-lg font-semibold mb-4">Write a Review</h3>
         <AddReviewForm productId={productId} />
-      </div>
+      </Card>
 
-      {/* Existing Reviews */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {product.reviews.map((review: Review) => (
-          <Card key={review._id} className="flex flex-col">
-            <CardContent className="flex flex-col gap-2">
-              {/* User Info */}
-              <div className="flex items-center gap-2">
-                {review.user.photo && (
-                  <Image
-                    src={review.user.photo}
-                    alt={review.user.name}
-                    width={32}
-                    height={32}
-                    className="rounded-full border"
-                  />
-                )}
-                <span className="font-semibold">{review.user.name}</span>
-                <span className="text-yellow-500">{review.rating}★</span>
+      {/* 📝 Reviews List */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {product.reviews?.map((review: Review) => (
+          <Card
+            key={review._id}
+            className="rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-all bg-white"
+          >
+            <CardContent className="p-6 space-y-4">
+              {/* Header */}
+              <div className="flex items-center gap-3">
+                <Image
+                  src={review.user.photo}
+                  alt={review.user.name}
+                  width={45}
+                  height={45}
+                  className="rounded-full border shadow-sm"
+                />
+                <div>
+                  <p className="font-semibold">{review.user.name}</p>
+                  <p className="text-yellow-500 font-medium">
+                    {review.rating} ★
+                  </p>
+                </div>
               </div>
 
-              {/* Review Text */}
-              <p className="text-gray-700">{review.review}</p>
+              <p className="text-gray-700 leading-relaxed">{review.review}</p>
 
-              {/* Reactions + Delete */}
-              <div className="flex gap-2 mt-2">
+              {/* Reactions */}
+              <div className="flex flex-wrap gap-2">
                 {["Like", "Dislike", "Love"].map((reaction) => (
                   <ReactReviewForm
                     key={reaction}
@@ -61,11 +65,13 @@ export default function ProductReviews({
                     review={review}
                   />
                 ))}
-                <DeleteReviewForm productId={productId} review={review} />
               </div>
 
-              {/* Edit Review */}
-              <EditReviewForm productId={productId} review={review} />
+              {/* Edit + Delete */}
+              <div className="flex gap-3 pt-4 border-t">
+                <EditReviewForm productId={productId} review={review} />
+                <DeleteReviewForm productId={productId} review={review} />
+              </div>
             </CardContent>
           </Card>
         ))}
