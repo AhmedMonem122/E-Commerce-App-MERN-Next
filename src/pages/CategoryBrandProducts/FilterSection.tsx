@@ -1,11 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-export default function FilterSection({ id }: { id: string }) {
+export default function FilterSection() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -19,6 +19,8 @@ export default function FilterSection({ id }: { id: string }) {
   const [rating, setRating] = useState(searchParams?.get("rating") || "0");
   const [sortBy, setSortBy] = useState(searchParams?.get("sortBy") || "");
 
+  const pathname = usePathname();
+
   const handleFilter = () => {
     const params = new URLSearchParams({
       search,
@@ -28,7 +30,7 @@ export default function FilterSection({ id }: { id: string }) {
       sortBy,
     });
 
-    router.push(`/categories/${id}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
