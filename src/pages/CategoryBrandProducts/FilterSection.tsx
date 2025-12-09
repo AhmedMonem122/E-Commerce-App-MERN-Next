@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-export default function FilterSection({ brandId }: { brandId: string }) {
+export default function FilterSection({ id }: { id: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -27,7 +27,7 @@ export default function FilterSection({ brandId }: { brandId: string }) {
       rating,
       sortBy,
     });
-    router.push(`/categories/${brandId}?${params.toString()}`);
+    router.push(`/categories/${id}?${params.toString()}`);
   };
 
   return (
