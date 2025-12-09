@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import CategoryBrandProducts from "@/pages/CategoryBrandProducts/CategoryBrandProducts";
 import api from "@/api/apiClient";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -40,8 +41,12 @@ async function fetchBrandProducts(
     page,
   }).toString();
 
-  const res = await api.get(`/brands/${id}/products?${queryString}`);
-  return res.data;
+  try {
+    const res = await api.get(`/brands/${id}/products?${queryString}`);
+    return res.data;
+  } catch {
+    return null;
+  }
 }
 
 export default async function BrandPage(props: {
@@ -51,10 +56,10 @@ export default async function BrandPage(props: {
   const searchParams = await props.searchParams;
   const { id } = await props.params;
   const productsData = await fetchBrandProducts(id, searchParams);
-
+  if (!productsData) return notFound();
   return (
     <main className="container mx-auto py-8">
-      <CategoryBrandProducts id={id} productsData={productsData} />
+      <CategoryBrandProducts productsData={productsData} />
     </main>
   );
 }
