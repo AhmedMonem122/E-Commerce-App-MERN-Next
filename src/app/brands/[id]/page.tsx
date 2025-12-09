@@ -44,14 +44,12 @@ async function fetchBrandProducts(
   return res.data;
 }
 
-export default async function BrandPage({
-  params,
-  searchParams,
-}: {
+export default async function BrandPage(props: {
   params: Promise<{ id: string }>;
-  searchParams: Record<string, string>;
+  searchParams: Promise<Record<string, string>>;
 }) {
-  const { id } = await params;
+  const searchParams = await props.searchParams;
+  const { id } = await props.params;
   const productsData = await fetchBrandProducts(id, searchParams);
 
   return (
