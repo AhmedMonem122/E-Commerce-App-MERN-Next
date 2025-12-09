@@ -21,17 +21,15 @@ interface ProductsData {
 }
 
 export default function CategoryBrandProducts({
-  id,
   productsData,
 }: {
-  id: string;
   productsData: ProductsData;
 }) {
   const products = productsData?.data?.products || [];
 
   return (
     <section className="space-y-8">
-      <FilterSection id={id} />
+      <FilterSection />
 
       {/* Products Grid */}
       <div
