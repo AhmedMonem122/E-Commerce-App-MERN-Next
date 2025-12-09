@@ -30,42 +30,87 @@ export default function CategoryBrandProducts({
   const products = productsData?.data?.products || [];
 
   return (
-    <section>
+    <section className="space-y-8">
       <FilterSection id={id} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
+
+      {/* Products Grid */}
+      <div
+        className="
+        grid 
+        grid-cols-1 
+        sm:grid-cols-2 
+        md:grid-cols-3 
+        lg:grid-cols-4
+        gap-6 
+        mt-8
+      "
+      >
         {products.map((product) => (
           <Link key={product._id} href={`/products/${product._id}`}>
-            <Card className="hover:shadow-lg transition">
-              <CardContent>
+            <Card
+              className="
+                group 
+                overflow-hidden 
+                rounded-xl 
+                shadow-sm 
+                hover:shadow-xl 
+                transition-all 
+                duration-300 
+                border border-gray-200
+              "
+            >
+              <div className="relative w-full h-56 overflow-hidden rounded-t-xl">
                 {product.imageCover ? (
                   <Image
                     src={product.imageCover}
                     alt={product.title}
-                    width={300}
-                    height={300}
-                    className="object-cover w-full h-48 rounded"
+                    fill
+                    className="
+                      object-cover 
+                      group-hover:scale-110 
+                      transition-all 
+                      duration-500
+                    "
                   />
                 ) : (
-                  <div className="bg-gray-200 w-full h-48 rounded flex items-center justify-center">
+                  <div className="bg-gray-200 w-full h-full flex items-center justify-center">
                     <span className="text-gray-500">No Image</span>
                   </div>
                 )}
-                <div className="mt-4">
-                  <h2 className="text-lg font-semibold">{product.title}</h2>
-                  <p className="text-gray-500">{product?.brand?.title}</p>
-                  <p className="text-primary font-bold">${product.price}</p>
-                  <p className="text-yellow-500">⭐ {product.ratingsAverage}</p>
-                  <p className="text-gray-400 text-xs">
-                    {product?.category?.title}
+              </div>
+
+              <CardContent className="p-4 space-y-2">
+                <h2 className="text-lg font-semibold line-clamp-1">
+                  {product.title}
+                </h2>
+
+                <p className="text-sm text-gray-500 -mt-1">
+                  {product?.brand?.title}
+                </p>
+
+                <div className="flex items-center justify-between mt-3">
+                  <p className="text-primary font-bold text-lg">
+                    ${product.price}
+                  </p>
+                  <p className="text-yellow-500 font-medium text-sm">
+                    ⭐ {product.ratingsAverage}
                   </p>
                 </div>
+
+                <p className="text-gray-400 text-xs">
+                  {product?.category?.title}
+                </p>
               </CardContent>
             </Card>
           </Link>
         ))}
       </div>
+
+      {/* No Products */}
       {products.length === 0 && (
-        <div className="text-center text-gray-500 mt-8">No products found.</div>
+        <div className="text-center text-gray-500 mt-8 text-lg font-medium">
+          No products found.
+        </div>
       )}
     </section>
   );
