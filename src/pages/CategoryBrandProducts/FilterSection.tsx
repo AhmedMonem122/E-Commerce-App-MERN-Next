@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,7 +19,6 @@ export default function FilterSection({ id }: { id: string }) {
   const [rating, setRating] = useState(searchParams?.get("rating") || "0");
   const [sortBy, setSortBy] = useState(searchParams?.get("sortBy") || "");
 
-  // Fix: Use the correct route for navigation
   const handleFilter = () => {
     const params = new URLSearchParams({
       search,
@@ -27,48 +27,95 @@ export default function FilterSection({ id }: { id: string }) {
       rating,
       sortBy,
     });
+
     router.push(`/categories/${id}?${params.toString()}`);
   };
 
   return (
-    <div className="flex flex-wrap gap-4 items-center">
-      <Input
-        placeholder="Search products"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="w-40"
-      />
-      <Input
-        type="number"
-        placeholder="Min Price"
-        value={minPrice}
-        onChange={(e) => setMinPrice(e.target.value)}
-        className="w-24"
-      />
-      <Input
-        type="number"
-        placeholder="Max Price"
-        value={maxPrice}
-        onChange={(e) => setMaxPrice(e.target.value)}
-        className="w-24"
-      />
-      <Input
-        type="number"
-        placeholder="Min Rating"
-        value={rating}
-        onChange={(e) => setRating(e.target.value)}
-        className="w-24"
-      />
-      <select
-        value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
-        className="border rounded px-2 py-1"
-      >
-        <option value="">Sort By</option>
-        <option value="price">Price</option>
-        <option value="ratingsAverage">Rating</option>
-      </select>
-      <Button onClick={handleFilter}>Apply Filters</Button>
+    <div
+      className="
+      bg-white 
+      p-5 
+      rounded-xl 
+      shadow-sm 
+      border 
+      border-gray-200 
+      flex 
+      flex-wrap 
+      gap-4 
+      items-end
+    "
+    >
+      {/* Search */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold mb-1">Search</label>
+        <Input
+          placeholder="Search products"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-40 sm:w-52"
+        />
+      </div>
+
+      {/* Min Price */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold mb-1">Min Price</label>
+        <Input
+          type="number"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+          className="w-24"
+        />
+      </div>
+
+      {/* Max Price */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold mb-1">Max Price</label>
+        <Input
+          type="number"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+          className="w-24"
+        />
+      </div>
+
+      {/* Rating */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold mb-1">Min Rating</label>
+        <Input
+          type="number"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+          className="w-24"
+        />
+      </div>
+
+      {/* Sort */}
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold mb-1">Sort By</label>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="
+            border 
+            rounded-md 
+            px-3 
+            py-2 
+            w-36 
+            text-sm 
+            bg-white
+          "
+        >
+          <option value="">None</option>
+          <option value="price">Price</option>
+          <option value="ratingsAverage">Rating</option>
+        </select>
+      </div>
+
+      {/* Apply Button */}
+      <Button onClick={handleFilter} className="mt-2 w-full sm:w-auto">
+        Apply Filters
+      </Button>
     </div>
   );
 }
