@@ -21,17 +21,17 @@ interface ProductsData {
 }
 
 export default function CategoryBrandProducts({
-  brandId,
+  id,
   productsData,
 }: {
-  brandId: string;
+  id: string;
   productsData: ProductsData;
 }) {
   const products = productsData?.data?.products || [];
 
   return (
     <section>
-      <FilterSection brandId={brandId} />
+      <FilterSection id={id} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8">
         {products.map((product) => (
           <Link key={product._id} href={`/products/${product._id}`}>
