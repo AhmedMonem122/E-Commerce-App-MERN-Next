@@ -54,7 +54,7 @@ export default async function BrandPage(props: {
 
   return (
     <main className="container mx-auto py-8">
-      <CategoryBrandProducts brandId={id} productsData={productsData} />
+      <CategoryBrandProducts id={id} productsData={productsData} />
     </main>
   );
 }
