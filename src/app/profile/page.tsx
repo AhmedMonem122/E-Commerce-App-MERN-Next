@@ -1,25 +1,22 @@
 import { cookies } from "next/headers";
 import apiServer from "../lib/apiServer.server";
 import ProfileCard from "@/components/Profile/ProfileCard";
-import { User } from "@/types/user";
 
-async function getUserProfile(): Promise<User> {
+async function getUserProfile() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  if (!token) {
-    throw new Error("Unauthorized");
-  }
-
   const api = await apiServer();
 
-  const res = await api.get("/users/me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  try {
+    const res = await api.get("/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return res.data.data.user;
+    return res.data.data.user;
+  } catch {}
 }
 
 export default async function ProfilePage() {
