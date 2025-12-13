@@ -7,7 +7,7 @@ import type { User } from "@/types/user";
 
 export default function ProfileCard({ user }: { user: User }) {
   const dashboardRoute =
-    user.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
+    user?.role === "admin" ? "/admin/dashboard" : "/user?./dashboard";
 
   return (
     <Card className="relative overflow-hidden border border-border/60 bg-background/80 backdrop-blur-xl shadow-xl">
@@ -18,18 +18,18 @@ export default function ProfileCard({ user }: { user: User }) {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
           <Avatar className="h-24 w-24 border-4 border-background shadow-lg">
-            <AvatarImage src={user.photo} alt={user.name} />
+            <AvatarImage src={user?.photo} alt={user?.name} />
             <AvatarFallback className="text-xl font-semibold">
-              {user.name.charAt(0)}
+              {user?.name.charAt(0)}
             </AvatarFallback>
           </Avatar>
 
           <div className="flex-1 text-center sm:text-left">
-            <h1 className="text-2xl font-bold tracking-tight">{user.name}</h1>
-            <p className="text-muted-foreground text-sm">{user.email}</p>
+            <h1 className="text-2xl font-bold tracking-tight">{user?.name}</h1>
+            <p className="text-muted-foreground text-sm">{user?.email}</p>
 
             <Badge className="mt-3 bg-indigo-600">
-              {user.role.toUpperCase()}
+              {user?.role.toUpperCase()}
             </Badge>
           </div>
         </div>
