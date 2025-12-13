@@ -7,7 +7,7 @@ import type { User } from "@/types/user";
 
 export default function ProfileCard({ user }: { user: User }) {
   const dashboardRoute =
-    user?.role === "admin" ? "/admin/dashboard" : "/user?./dashboard";
+    user?.role === "admin" ? "/admin/dashboard" : "/user/dashboard";
 
   return (
     <Card className="relative overflow-hidden border border-border/60 bg-background/80 backdrop-blur-xl shadow-xl">
