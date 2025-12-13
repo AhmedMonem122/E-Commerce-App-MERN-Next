@@ -36,7 +36,8 @@ export default function Navbar({ user }: { user?: User | null }) {
       const res = await fetch("/api/auth/logout", { method: "POST" });
       if (res.ok) {
         // refresh or navigate to home/login
-        router.refresh(); // or router.refresh()
+        router.push("/login"); // or router.refresh()
+        router.refresh();
       } else {
         console.error("Logout failed");
       }
