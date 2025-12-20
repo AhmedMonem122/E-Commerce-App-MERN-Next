@@ -10,9 +10,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  const headers = new Headers(request.headers);
+  headers.set("x-current-path", request.nextUrl.pathname);
+
+  return NextResponse.next({ headers });
 }
 
 export const config = {
-  matcher: ["/profile"],
+  matcher: ["/profile", "/admin/:path*", "/user/:path*"],
 };
