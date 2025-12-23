@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import apiServer from "../lib/apiServer.server";
+import apiServer from "../../lib/apiServer.server";
 import ProfileCard from "@/components/Profile/ProfileCard";
 import ProfileEditTabs from "@/components/ProfileEditTabs/ProfileEditTabs";
 
