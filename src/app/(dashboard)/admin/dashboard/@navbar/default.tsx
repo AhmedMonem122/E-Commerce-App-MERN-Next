@@ -1,7 +1,8 @@
 import apiServer from "@/app/lib/apiServer.server";
+import DashboardNavbar from "@/components/Dashboard/ReusableComponents/DashboardLayout/DashboardNavbar";
 import axios from "axios";
 
-const UserDashboardPage = async () => {
+const Navbar = async () => {
   let user = null;
   try {
     const api = await apiServer();
@@ -14,16 +15,7 @@ const UserDashboardPage = async () => {
     }
   }
 
-  return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-semibold">
-        Welcome back, {user?.name || "User"} 👋
-      </h2>
-      <p className="text-muted-foreground">
-        Track orders, reviews, and products.
-      </p>
-    </div>
-  );
+  return <DashboardNavbar title="Admin Dashboard" role="admin" user={user} />;
 };
 
-export default UserDashboardPage;
+export default Navbar;

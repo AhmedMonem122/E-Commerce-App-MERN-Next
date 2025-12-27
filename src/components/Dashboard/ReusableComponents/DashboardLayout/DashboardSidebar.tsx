@@ -6,16 +6,17 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { dashboardLinks, DashboardRole } from "./dashboard-links";
+import { useState } from "react";
 
 interface Props {
   role: DashboardRole;
-  collapsed: boolean;
-  onToggle: () => void;
 }
 
-export default function DashboardSidebar({ role, collapsed, onToggle }: Props) {
+export default function DashboardSidebar({ role }: Props) {
   const pathname = usePathname();
   const links = dashboardLinks[role];
+
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <aside
@@ -32,7 +33,11 @@ export default function DashboardSidebar({ role, collapsed, onToggle }: Props) {
           </span>
         )}
 
-        <Button size="icon" variant="ghost" onClick={onToggle}>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={() => setCollapsed((p) => !p)}
+        >
           {collapsed ? <ChevronRight /> : <ChevronLeft />}
         </Button>
       </div>
