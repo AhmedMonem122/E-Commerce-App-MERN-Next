@@ -1,10 +1,26 @@
+import apiServer from "@/app/lib/apiServer.server";
 import DashboardLayout from "@/components/Dashboard/ReusableComponents/DashboardLayout/DashboardLayout";
+import axios from "axios";
 
-export default function UserDashboardPage() {
+export default async function UserDashboardPage() {
+  let user = null;
+  try {
+    const api = await apiServer();
+    const res = await api.get("/users/me"); // adjust if your endpoint differs
+    user = res.data?.data?.user ?? null;
+  } catch (axiosError) {
+    if (axios.isAxiosError(axiosError)) {
+      // not authenticated or error -> user stays null
+      user = null;
+    }
+  }
+
   return (
-    <DashboardLayout role="user" userName="Ahmed">
+    <DashboardLayout role="user" user={user}>
       <div className="space-y-4">
-        <h2 className="text-2xl font-semibold">Welcome back, Ahmed 👋</h2>
+        <h2 className="text-2xl font-semibold">
+          Welcome back, {user?.name || "User"} 👋
+        </h2>
         <p className="text-muted-foreground">
           Track orders, reviews, and products.
         </p>
