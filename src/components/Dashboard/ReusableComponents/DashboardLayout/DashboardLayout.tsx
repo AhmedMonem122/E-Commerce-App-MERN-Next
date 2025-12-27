@@ -4,14 +4,15 @@ import { ReactNode, useState } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardNavbar from "./DashboardNavbar";
 import { DashboardRole } from "./dashboard-links";
+import { User } from "@/types/user";
 
 interface Props {
   children: ReactNode;
   role: DashboardRole;
-  userName?: string;
+  user?: User;
 }
 
-export default function DashboardLayout({ children, role, userName }: Props) {
+export default function DashboardLayout({ children, role, user }: Props) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -25,10 +26,12 @@ export default function DashboardLayout({ children, role, userName }: Props) {
       <div className="flex-1 flex flex-col">
         <DashboardNavbar
           title={
-            role === "admin" ? "Admin Dashboard" : `${userName}'s Dashboard`
+            role === "admin"
+              ? "Admin Dashboard"
+              : `${user?.name || "User"}'s Dashboard`
           }
           role={role}
-          userName={userName}
+          user={user}
         />
 
         <main className="flex-1 p-6">{children}</main>
