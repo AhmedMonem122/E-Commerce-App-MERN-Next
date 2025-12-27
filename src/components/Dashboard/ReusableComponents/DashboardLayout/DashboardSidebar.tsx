@@ -27,7 +27,7 @@ export default function DashboardSidebar({ role, collapsed, onToggle }: Props) {
       {/* Logo / Toggle */}
       <div className="h-16 flex items-center justify-between px-4 border-b">
         {!collapsed && (
-          <span className="text-lg font-bold tracking-tight">
+          <span className="text-[14px] md:text-lg font-bold tracking-tight">
             {role === "admin" ? "Admin Panel" : "User Panel"}
           </span>
         )}
