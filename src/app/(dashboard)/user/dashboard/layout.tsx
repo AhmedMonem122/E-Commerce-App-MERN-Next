@@ -10,7 +10,7 @@ export default async function UserDashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen bg-muted/40">
+    <div className="flex h-full bg-muted/40">
       {sidebar}
       <div className="flex-1 flex flex-col">
         {navbar}
