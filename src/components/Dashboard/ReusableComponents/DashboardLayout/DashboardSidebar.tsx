@@ -21,7 +21,7 @@ export default function DashboardSidebar({ role }: Props) {
   return (
     <aside
       className={cn(
-        "sticky top-0 h-screen border-r bg-background transition-all duration-300",
+        "hidden md:block sticky top-0 h-screen border-r bg-background transition-all duration-300",
         collapsed ? "w-[72px]" : "w-64"
       )}
     >
