@@ -12,7 +12,9 @@ export default function DashboardNavbar({ title, user, role }: Props) {
   return (
     <header className="sticky top-0 z-40 h-16 border-b bg-background/80 backdrop-blur">
       <div className="flex h-full items-center justify-between px-6">
-        <h1 className="text-[14px] md:text-xl font-semibold">{title}</h1>
+        <h1 className="text-indigo-600 text-[14px] md:text-xl font-semibold">
+          {title}
+        </h1>
 
         <div className="flex items-center gap-3">
           <Badge className="bg-indigo-600 text-white">
@@ -21,7 +23,7 @@ export default function DashboardNavbar({ title, user, role }: Props) {
 
           <Avatar>
             <AvatarImage src={user?.photo} />
-            <AvatarFallback>
+            <AvatarFallback className="bg-indigo-600 text-white">
               {user?.name?.charAt(0).toUpperCase() ?? "U"}
             </AvatarFallback>
           </Avatar>
