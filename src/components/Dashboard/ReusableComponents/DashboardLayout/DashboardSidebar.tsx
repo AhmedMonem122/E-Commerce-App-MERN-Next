@@ -28,7 +28,7 @@ export default function DashboardSidebar({ role }: Props) {
       {/* Logo / Toggle */}
       <div className="h-16 flex items-center justify-between px-4 border-b">
         {!collapsed && (
-          <span className="text-[14px] md:text-lg font-bold tracking-tight">
+          <span className="text-indigo-600 text-[14px] md:text-lg font-bold tracking-tight">
             {role === "admin" ? "Admin Panel" : "User Panel"}
           </span>
         )}
@@ -36,6 +36,7 @@ export default function DashboardSidebar({ role }: Props) {
         <Button
           size="icon"
           variant="ghost"
+          className="text-indigo-600 hover:bg-indigo-100 hover:text-indigo-600 transition-all"
           onClick={() => setCollapsed((p) => !p)}
         >
           {collapsed ? <ChevronRight /> : <ChevronLeft />}
@@ -53,8 +54,8 @@ export default function DashboardSidebar({ role }: Props) {
               key={link.href}
               href={link.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
-                active ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                "text-indigo-600 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
+                active ? "bg-indigo-600 text-white" : "hover:bg-indigo-100"
               )}
             >
               <Icon className="w-5 h-5 shrink-0" />
