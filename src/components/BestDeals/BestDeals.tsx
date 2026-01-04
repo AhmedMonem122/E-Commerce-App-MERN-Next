@@ -23,7 +23,7 @@ export default async function BestDeals() {
       </div>
 
       {/* Grid Layout */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {/* Error State */}
         {!products && (
           <div className="col-span-full text-center text-red-500 text-lg">
@@ -53,10 +53,15 @@ export default async function BestDeals() {
                 </div>
 
                 {/* Card Content */}
-                <CardHeader className="px-4 pt-4 pb-2">
-                  <h3 className="font-semibold text-sm md:text-base line-clamp-2 text-center">
-                    {product.title}
-                  </h3>
+                <CardHeader className="px-0 pt-4 pb-2">
+                  <div className="mx-auto flex items-center justify-center w-[170px] text-nowrap">
+                    <h3
+                      title={product.title}
+                      className="font-semibold text-sm md:text-base line-clamp-2 text-center text-ellipsis"
+                    >
+                      {product.title}
+                    </h3>
+                  </div>
                 </CardHeader>
 
                 <CardContent className="pb-4 px-4">
