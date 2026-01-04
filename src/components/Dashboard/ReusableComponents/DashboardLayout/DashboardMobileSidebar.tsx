@@ -6,10 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  dashboardLinks,
-  DashboardRole,
-} from "./DashboardLayout/dashboard-links";
+import { dashboardLinks, DashboardRole } from "./dashboard-links";
 
 interface Props {
   role: DashboardRole;

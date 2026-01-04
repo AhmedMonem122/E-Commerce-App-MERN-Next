@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { User } from "@/types/user";
-import DashboardMobileSidebar from "../DashboardMobileSidebar";
+import DashboardMobileSidebar from "./DashboardMobileSidebar";
 
 interface Props {
   title: string;
