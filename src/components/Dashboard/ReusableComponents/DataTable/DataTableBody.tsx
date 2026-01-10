@@ -31,24 +31,32 @@ export function DataTableBody<T extends { _id?: string }>({
           {actions && (
             <TableCell className="text-right">
               <div className="flex justify-end gap-2">
-                {actions.map((action, i) =>
-                  action.href ? (
-                    <Link key={i} href={action.href(row)}>
-                      <Button size="icon" variant="ghost">
-                        {action.icon}
-                      </Button>
-                    </Link>
-                  ) : (
+                {actions.map((action, i) => {
+                  if (action.render) {
+                    return <div key={i}>{action.render(row)}</div>;
+                  }
+
+                  if (action.href) {
+                    return (
+                      <Link key={i} href={action.href(row)}>
+                        <Button size="icon" variant="ghost">
+                          {action.icon}
+                        </Button>
+                      </Link>
+                    );
+                  }
+
+                  return (
                     <Button
                       key={i}
                       size="icon"
                       variant="ghost"
-                      onClick={() => action.onClick?.(row)}
+                      onClick={() => action.onClick(row)}
                     >
                       {action.icon}
                     </Button>
-                  )
-                )}
+                  );
+                })}
               </div>
             </TableCell>
           )}
