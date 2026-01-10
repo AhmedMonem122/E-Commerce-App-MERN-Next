@@ -20,6 +20,7 @@ import { Product } from "@/types/product";
 import { DataTablePagination } from "../ReusableComponents/DataTable/DataTablePagination";
 import { DataTable } from "../ReusableComponents/DataTable/DataTable";
 import { Eye, Pencil } from "lucide-react";
+import DeleteProductDialog from "./DeleteProductDialog";
 
 export default function ProductsTable({
   initialData,
@@ -91,6 +92,9 @@ export default function ProductsTable({
           {
             icon: <Pencil className="h-4 w-4" />,
             href: (p) => `/admin/dashboard/products/edit/${p._id}`,
+          },
+          {
+            render: (p) => <DeleteProductDialog productId={p._id} />,
           },
         ]}
       />
