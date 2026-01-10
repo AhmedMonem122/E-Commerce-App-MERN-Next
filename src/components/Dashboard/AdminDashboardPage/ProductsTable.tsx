@@ -21,6 +21,7 @@ import { DataTablePagination } from "../ReusableComponents/DataTable/DataTablePa
 import { DataTable } from "../ReusableComponents/DataTable/DataTable";
 import { Eye, Pencil } from "lucide-react";
 import DeleteProductDialog from "./DeleteProductDialog";
+import ProductImage from "./ProductImage";
 
 export default function ProductsTable({
   initialData,
@@ -73,12 +74,20 @@ export default function ProductsTable({
 
       <DataTable<Product>
         headers={[
-          { key: "title", label: "Title", sortable: true },
+          {
+            label: "Image",
+            render: (p) => <ProductImage product={p} />,
+          },
+          // { key: "title", label: "Title", sortable: true },
           { key: "price", label: "Price", sortable: true },
           { key: "ratingsAverage", label: "Rating", sortable: true },
           {
             label: "Brand",
             render: (p) => p.brand?.title ?? "—",
+          },
+          {
+            label: "Category",
+            render: (p) => p.category?.title ?? "—",
           },
         ]}
         data={products}
