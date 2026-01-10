@@ -1,8 +1,5 @@
 import { ReactNode } from "react";
 
-// types/data-table.ts
-import { ReactNode } from "react";
-
 export type TableHeaderConfig<T> =
   | {
       label: string;
@@ -23,9 +20,22 @@ export type TableHeaderConfig<T> =
       render: (row: T) => ReactNode;
     };
 
-export type RowAction<T> = {
-  label?: string;
-  icon: ReactNode;
-  onClick?: (row: T) => void;
-  href?: (row: T) => string;
-};
+export type RowAction<T> =
+  | {
+      icon: ReactNode;
+      href: (row: T) => string;
+      onClick?: never;
+      render?: never;
+    }
+  | {
+      icon: ReactNode;
+      onClick: (row: T) => void;
+      href?: never;
+      render?: never;
+    }
+  | {
+      render: (row: T) => ReactNode;
+      icon?: never;
+      href?: never;
+      onClick?: never;
+    };
