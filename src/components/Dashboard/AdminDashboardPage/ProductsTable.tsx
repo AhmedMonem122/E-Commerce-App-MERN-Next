@@ -7,10 +7,10 @@ import { Product } from "@/types/product";
 import { DataTablePagination } from "../ReusableComponents/DataTable/DataTablePagination";
 import { DataTable } from "../ReusableComponents/DataTable/DataTable";
 import { Eye, Pencil } from "lucide-react";
-import DeleteProductDialog from "./DeleteProductDialog";
 import ProductImage from "./ProductImage";
 import TableError from "../ReusableComponents/DataTable/TableError";
 import EmptyTable from "../ReusableComponents/DataTable/EmptyTable";
+import DeleteActionDialog from "../ReusableComponents/DataTable/DeleteActionDialog";
 
 export default function ProductsTable({
   initialData,
@@ -102,7 +102,15 @@ export default function ProductsTable({
               href: (p) => `/admin/dashboard/products/edit/${p._id}`,
             },
             {
-              render: (p) => <DeleteProductDialog productId={p._id} />,
+              render: (p) => (
+                <DeleteActionDialog
+                  resource="products"
+                  id={p._id}
+                  invalidateKey={["products"]}
+                  title="Delete product?"
+                  onSuccessMessage="Product deleted"
+                />
+              ),
             },
           ]}
         />
