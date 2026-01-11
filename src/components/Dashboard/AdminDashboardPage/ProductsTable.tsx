@@ -36,7 +36,7 @@ export default function ProductsTable({
   const sort = params?.get("sort") ?? "";
   const search = params?.get("search") ?? "";
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ["products", page, limit, sort, search],
     queryFn: async () => {
       const res = await apiClient.get("/products", {
@@ -106,6 +106,7 @@ export default function ProductsTable({
             render: (p) => <DeleteProductDialog productId={p._id} />,
           },
         ]}
+        isLoading={isFetching}
       />
 
       <DataTablePagination
