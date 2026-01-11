@@ -1,20 +1,7 @@
 "use client";
-
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
-// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
-// import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-// import { ArrowUpDown, Eye, Pencil } from "lucide-react";
-// import DeleteProductDialog from "./DeleteProductDialog";
 import apiClient from "@/api/apiClient";
 import { Product } from "@/types/product";
 import { DataTablePagination } from "../ReusableComponents/DataTable/DataTablePagination";
@@ -22,6 +9,8 @@ import { DataTable } from "../ReusableComponents/DataTable/DataTable";
 import { Eye, Pencil } from "lucide-react";
 import DeleteProductDialog from "./DeleteProductDialog";
 import ProductImage from "./ProductImage";
+import TableError from "../ReusableComponents/DataTable/TableError";
+import EmptyTable from "../ReusableComponents/DataTable/EmptyTable";
 
 export default function ProductsTable({
   initialData,
@@ -36,7 +25,7 @@ export default function ProductsTable({
   const sort = params?.get("sort") ?? "";
   const search = params?.get("search") ?? "";
 
-  const { data, isFetching } = useQuery({
+  const { data, isFetching, isError } = useQuery({
     queryKey: ["products", page, limit, sort, search],
     queryFn: async () => {
       const res = await apiClient.get("/products", {
@@ -58,7 +47,9 @@ export default function ProductsTable({
     else updateParam("sort", field);
   }
 
-  const products = data.data.products;
+  const products = data?.data?.products ?? [];
+
+  const isEmpty = !isFetching && !isError && products.length === 0;
 
   return (
     <div className="space-y-4">
@@ -72,42 +63,50 @@ export default function ProductsTable({
         />
       </div>
 
-      <DataTable<Product>
-        headers={[
-          {
-            label: "Image",
-            render: (p) => <ProductImage product={p} />,
-          },
-          // { key: "title", label: "Title", sortable: true },
-          { key: "price", label: "Price", sortable: true },
-          { key: "ratingsAverage", label: "Rating", sortable: true },
-          {
-            label: "Brand",
-            render: (p) => p.brand?.title ?? "—",
-          },
-          {
-            label: "Category",
-            render: (p) => p.category?.title ?? "—",
-          },
-        ]}
-        data={products}
-        sort={sort}
-        onSort={toggleSort}
-        actions={[
-          {
-            icon: <Eye className="h-4 w-4" />,
-            href: (p) => `/products/${p._id}`,
-          },
-          {
-            icon: <Pencil className="h-4 w-4" />,
-            href: (p) => `/admin/dashboard/products/edit/${p._id}`,
-          },
-          {
-            render: (p) => <DeleteProductDialog productId={p._id} />,
-          },
-        ]}
-        isLoading={isFetching}
-      />
+      {isError ? (
+        <TableError message="Unable to fetch products. Please try again." />
+      ) : isEmpty ? (
+        <EmptyTable
+          title="No products found"
+          description="Try adjusting your search or filters."
+        />
+      ) : (
+        <DataTable<Product>
+          headers={[
+            {
+              label: "Image",
+              render: (p) => <ProductImage product={p} />,
+            },
+            { key: "price", label: "Price", sortable: true },
+            { key: "ratingsAverage", label: "Rating", sortable: true },
+            {
+              label: "Brand",
+              render: (p) => p.brand?.title ?? "—",
+            },
+            {
+              label: "Category",
+              render: (p) => p.category?.title ?? "—",
+            },
+          ]}
+          data={products}
+          sort={sort}
+          onSort={toggleSort}
+          isLoading={isFetching}
+          actions={[
+            {
+              icon: <Eye className="h-4 w-4" />,
+              href: (p) => `/products/${p._id}`,
+            },
+            {
+              icon: <Pencil className="h-4 w-4" />,
+              href: (p) => `/admin/dashboard/products/edit/${p._id}`,
+            },
+            {
+              render: (p) => <DeleteProductDialog productId={p._id} />,
+            },
+          ]}
+        />
+      )}
 
       <DataTablePagination
         page={data.metadata.currentPage}
@@ -116,93 +115,6 @@ export default function ProductsTable({
         onPageChange={(p) => updateParam("page", String(p))}
         onLimitChange={(l) => updateParam("limit", String(l))}
       />
-
-      {/* Table
-      <div className="rounded-md border bg-background">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>
-                <Button variant="ghost" onClick={() => toggleSort("title")}>
-                  Title <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-              </TableHead>
-
-              <TableHead>
-                <Button variant="ghost" onClick={() => toggleSort("price")}>
-                  Price <ArrowUpDown className="ml-1 h-4 w-4" />
-                </Button>
-              </TableHead>
-
-              <TableHead>Rating</TableHead>
-              <TableHead>Brand</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {products.map((product: Product) => (
-              <TableRow key={product._id}>
-                <TableCell className="font-medium">{product.title}</TableCell>
-                <TableCell>${product.price}</TableCell>
-                <TableCell>{product.ratingsAverage} ⭐</TableCell>
-                <TableCell>{product.brand?.title}</TableCell>
-
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Link href={`/products/${product._id}`}>
-                      <Button size="icon" variant="ghost">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </Link>
-
-                    <Link
-                      href={`/admin/dashboard/products/edit/${product._id}`}
-                    >
-                      <Button size="icon" variant="ghost">
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                    </Link>
-
-                    <DeleteProductDialog productId={product._id} />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      {/* Pagination 
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          Page {data.metadata.currentPage} of {data.metadata.numberOfPages}
-        </p>
-
-        <div className="flex gap-2">
-          {data.metadata.currentPage > 1 && (
-            <Button
-              variant="outline"
-              onClick={() =>
-                updateParam("page", String(data.metadata.currentPage - 1))
-              }
-            >
-              Previous
-            </Button>
-          )}
-
-          {data.metadata.nextPage && (
-            <Button
-              variant="outline"
-              onClick={() =>
-                updateParam("page", String(data.metadata.nextPage))
-              }
-            >
-              Next
-            </Button>
-          )}
-        </div>
-      </div> */}
     </div>
   );
 }
