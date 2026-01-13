@@ -59,6 +59,16 @@ export default function FormField<T>({
         </Select>
       )}
 
+      {type === "file" && (
+        <div className="space-y-1">
+          <Input
+            type="file"
+            name={name as string}
+            multiple={name === "images"}
+          />
+        </div>
+      )}
+
       {type === "switch" && (
         <Switch name={name as string} defaultChecked={defaultValue} />
       )}
