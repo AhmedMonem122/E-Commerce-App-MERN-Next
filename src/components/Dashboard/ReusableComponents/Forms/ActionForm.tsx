@@ -17,7 +17,9 @@ export function ActionForm<T>({
   initialData?: Partial<T>;
   submitLabel: string;
 }) {
-  const [state, formAction] = useActionState<ActionState<T>>(action, {});
+  const initialState: ActionState<T> = {};
+  //  const action = reactReviewAction.bind(null, productId);
+  const [state, formAction] = useActionState(action, initialState);
 
   useEffect(() => {
     if (state.success) toast.success(state.message ?? "Saved successfully");
@@ -25,8 +27,12 @@ export function ActionForm<T>({
   }, [state]);
 
   return (
-    <form action={formAction} className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form
+      action={formAction}
+      encType="multipart/form-data"
+      className="space-y-6"
+    >
+      <div className="grid gap-4">
         {fields.map((field) => (
           <FormField
             key={String(field.name)}
