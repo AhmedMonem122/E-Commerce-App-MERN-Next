@@ -4,6 +4,7 @@ export type FieldType =
   | "textarea"
   | "select"
   | "switch"
+  | "file"
   | "hidden";
 
 export type FormFieldConfig<T> = {
@@ -12,7 +13,7 @@ export type FormFieldConfig<T> = {
   type: FieldType;
   placeholder?: string;
   options?: { label: string; value: string }[];
-  defaultValue?: T[keyof T];
+  defaultValue?: typeof FieldType;
 };
 
 export type ActionState<T> = {
