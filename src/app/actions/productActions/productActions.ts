@@ -18,7 +18,7 @@ const addProductSchema = z.object({
 
 export async function addProductAction(
   _state: ActionState<AddProductForm> | undefined,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState<AddProductForm>> {
   /* ------------------ EXTRACT DATA ------------------ */
   const rawData = {
@@ -29,8 +29,8 @@ export async function addProductAction(
     category: formData.get("category"),
   };
 
-  //   const imageCover = formData.get("imageCover");
-  //   const images = formData.getAll("images");
+  const imageCover = formData.get("imageCover");
+  const images = formData.getAll("images");
 
   /* ------------------ VALIDATION ------------------ */
   const parsed = addProductSchema.safeParse(rawData);
@@ -46,13 +46,18 @@ export async function addProductAction(
     });
   }
 
-  //   if (!(imageCover instanceof File) || imageCover.size === 0) {
-  //     errors.imageCover = "Image cover is required";
-  //   }
+  if (!(imageCover instanceof File) || imageCover.size === 0) {
+    errors.imageCover = "Image cover is required";
+  }
 
-  //   if (!images.length || !images.every((img) => img instanceof File)) {
-  //     errors.images = "At least one product image is required";
-  //   }
+  if (
+    !images.every(
+      (img) =>
+        img instanceof File && img.size > 0 && img.type.startsWith("image/"),
+    )
+  ) {
+    errors.images = "At least one product image is required";
+  }
 
   if (Object.keys(errors).length > 0) {
     return {
@@ -72,11 +77,11 @@ export async function addProductAction(
     payload.append("price", String(parsed.data?.price));
     payload.append("brand", parsed.data?.brand as string);
     payload.append("category", parsed.data?.category as string);
-    // payload.append("imageCover", imageCover as File);
+    payload.append("imageCover", imageCover as File);
 
-    // images.forEach((img) => {
-    //   payload.append("images", img as File);
-    // });
+    images.forEach((img) => {
+      payload.append("images", img as File);
+    });
 
     const res = await axiosInstance.post("/products", payload);
 
