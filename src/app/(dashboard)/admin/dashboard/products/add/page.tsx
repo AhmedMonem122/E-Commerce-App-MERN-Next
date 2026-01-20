@@ -10,7 +10,7 @@ export default async function AddProductPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-2xl font-semibold">Add Product</h1>
+      <h1 className="text-2xl font-semibold text-indigo-600">Add Product</h1>
 
       <ActionForm<AddProductForm>
         action={addProductAction}
@@ -35,6 +35,7 @@ export default async function AddProductPage() {
               label: b.title,
               value: b._id,
             })),
+            placeholder: "Select a brand",
           },
           {
             name: "category",
@@ -44,6 +45,7 @@ export default async function AddProductPage() {
               label: c.title,
               value: c._id,
             })),
+            placeholder: "Select a category",
           },
           {
             name: "imageCover",
