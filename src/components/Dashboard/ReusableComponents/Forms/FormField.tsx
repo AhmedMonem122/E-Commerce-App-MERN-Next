@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { FormFieldConfig } from "@/types/form";
+import { FileInput } from "./FileInput";
 
 export default function FormField<T>({
   field,
@@ -22,13 +23,14 @@ export default function FormField<T>({
 
   return (
     <div className="space-y-1">
-      {label && <Label>{label}</Label>}
+      {label && <Label className="text-indigo-600">{label}</Label>}
 
       {type === "text" && (
         <Input
           name={name as string}
           defaultValue={defaultValue}
           placeholder={placeholder}
+          className="border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50"
         />
       )}
 
@@ -37,21 +39,30 @@ export default function FormField<T>({
           type="number"
           name={name as string}
           defaultValue={defaultValue}
+          className="border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50"
         />
       )}
 
       {type === "textarea" && (
-        <Textarea name={name as string} defaultValue={defaultValue} />
+        <Textarea
+          name={name as string}
+          defaultValue={defaultValue}
+          className="border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50"
+        />
       )}
 
       {type === "select" && (
-        <Select name={name as string} defaultValue={defaultValue}>
-          <SelectTrigger>
+        <Select name={name as string} defaultValue={defaultValue || undefined}>
+          <SelectTrigger className="border-indigo-600 data-[placeholder]:text-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>
           <SelectContent>
             {options?.map((o) => (
-              <SelectItem key={o.value} value={o.value}>
+              <SelectItem
+                key={o.value}
+                value={o.value}
+                className="data-[state=checked]:bg-indigo-100 data-[state=checked]:text-indigo-900 data-[highlighted]:bg-indigo-50 data-[highlighted]:text-indigo-900"
+              >
                 {o.label}
               </SelectItem>
             ))}
@@ -61,11 +72,7 @@ export default function FormField<T>({
 
       {type === "file" && (
         <div className="space-y-1">
-          <Input
-            type="file"
-            name={name as string}
-            multiple={name === "images"}
-          />
+          <FileInput<T> field={field} />
         </div>
       )}
 
