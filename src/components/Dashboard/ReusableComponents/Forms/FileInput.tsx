@@ -3,10 +3,11 @@ import { useDropzone } from "react-dropzone";
 import { UploadCloud, X, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FormFieldConfig } from "@/types/form";
+import Image from "next/image";
 
 export function FileInput<T>({ field }: { field: FormFieldConfig<T> }) {
   const [files, setFiles] = useState<File[]>([]);
-  const { name } = field;
+  const { name, defaultValue } = field;
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -71,6 +72,89 @@ export function FileInput<T>({ field }: { field: FormFieldConfig<T> }) {
           </div>
         </div>
       </div>
+
+      {/* Uploaded File Preview List */}
+      {name === "imageCover" && defaultValue && (
+        <>
+          <p className="text-indigo-600 text-sm">Uploaded Cover Image</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 animate-in fade-in slide-in-from-top-2">
+            <div className="w-fit flex items-center justify-between rounded-lg border border-indigo-100 bg-indigo-50/30 p-3 dark:border-indigo-900/50 dark:bg-indigo-950/20">
+              <div className="flex items-center gap-3">
+                <div className="rounded-md bg-indigo-600 p-1.5 text-white">
+                  <Image
+                    src={defaultValue}
+                    alt="Cover Image"
+                    width={40}
+                    height={40}
+                  />
+                </div>
+                {/* <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-indigo-950 dark:text-indigo-100 truncate max-w-[180px]">
+                  {file.name}
+                  </span>
+                  <span className="text-[10px] text-indigo-600/60 uppercase font-bold">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                  </span>
+                  </div> */}
+              </div>
+              {/* <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFiles(files.filter((_, index) => index !== i));
+                  }}
+                  className="rounded-full p-1 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900 transition-colors"
+                  >
+                  <X className="h-4 w-4" />
+                  </button> */}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Uploaded Files Preview List */}
+      {name === "images" && defaultValue && defaultValue.length > 0 && (
+        <>
+          <p className="text-indigo-600 text-sm text-center">Uploaded Images</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 animate-in fade-in slide-in-from-top-2">
+            {defaultValue?.map((file: string, i: number) => (
+              <div
+                key={i}
+                className="w-fit flex items-center justify-between rounded-lg border border-indigo-100 bg-indigo-50/30 p-3 dark:border-indigo-900/50 dark:bg-indigo-950/20"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-md bg-indigo-600 p-1.5 text-white">
+                    <Image
+                      src={file}
+                      alt={`Image ${i + 1}`}
+                      width={40}
+                      height={40}
+                    />
+                  </div>
+                  {/* <div className="flex flex-col">
+                  <span className="text-sm font-semibold text-indigo-950 dark:text-indigo-100 truncate max-w-[180px]">
+                  {file.name}
+                  </span>
+                  <span className="text-[10px] text-indigo-600/60 uppercase font-bold">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                  </span>
+                  </div> */}
+                </div>
+                {/* <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setFiles(files.filter((_, index) => index !== i));
+                  }}
+                  className="rounded-full p-1 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600 dark:hover:bg-indigo-900 transition-colors"
+                  >
+                  <X className="h-4 w-4" />
+                  </button> */}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* File Preview List */}
       {files.length > 0 && (
