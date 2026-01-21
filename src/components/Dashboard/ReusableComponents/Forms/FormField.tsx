@@ -80,6 +80,16 @@ export default function FormField<T>({
         <Switch name={name as string} defaultChecked={defaultValue} />
       )}
 
+      {type === "hidden" && (
+        <input
+          name={name as string}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          type={type}
+          className="border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50"
+        />
+      )}
+
       {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
