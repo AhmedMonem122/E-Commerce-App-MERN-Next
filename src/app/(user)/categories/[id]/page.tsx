@@ -21,7 +21,7 @@ export async function generateMetadata({
 
 async function fetchBrandProducts(
   id: string,
-  searchParams: Record<string, string>
+  searchParams: Record<string, string>,
 ) {
   const {
     search = "",
@@ -42,7 +42,9 @@ async function fetchBrandProducts(
   }).toString();
 
   try {
-    const res = await api.get(`/categories/${id}/products?${queryString}`);
+    const res = await api.get(
+      `/categories/${id}/products${search && (sortBy || +minPrice || +rating) ? `?${queryString}` : ""}`,
+    );
     return res.data;
   } catch {
     return null;
