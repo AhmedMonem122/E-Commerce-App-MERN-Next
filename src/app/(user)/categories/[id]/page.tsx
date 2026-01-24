@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import CategoryBrandProducts from "@/pages/CategoryBrandProducts/CategoryBrandProducts";
-import api from "@/api/apiClient";
 import { notFound } from "next/navigation";
+import apiServer from "@/app/lib/apiServer.server";
 
 export async function generateMetadata({
   params,
@@ -10,6 +10,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   // Fetch brand name for dynamic title
+  const api = await apiServer();
   const res = await api.get(`/categories/${id}`);
 
   const categoryName = res?.data?.data?.category?.title || "Category";
@@ -42,6 +43,7 @@ async function fetchBrandProducts(
   }).toString();
 
   try {
+    const api = await apiServer();
     const res = await api.get(
       `/categories/${id}/products${search && (sortBy || +minPrice || +rating) ? `?${queryString}` : ""}`,
     );
