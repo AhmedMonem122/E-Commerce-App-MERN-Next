@@ -1,14 +1,14 @@
-import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { Category } from "@/types/category";
-import api from "@/api/apiClient";
 import Link from "next/link";
+import apiServer from "@/app/lib/apiServer.server";
 
 // Fetch Categories
 async function getCategories() {
   try {
+    const api = await apiServer();
     const res = await api.get("/categories");
     return res.data.data.categories;
   } catch (error) {
