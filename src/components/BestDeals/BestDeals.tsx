@@ -3,10 +3,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { TopCheapProduct } from "@/types/product";
 import Image from "next/image";
-import api from "@/api/apiClient";
 import Link from "next/link";
+import apiServer from "@/app/lib/apiServer.server";
 
 export default async function BestDeals() {
+  const api = await apiServer();
   const res = await api.get("/products/top-5-cheap");
   const products = res.data?.data?.products as TopCheapProduct[];
 
