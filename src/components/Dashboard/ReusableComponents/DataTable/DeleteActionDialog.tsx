@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import apiClient from "@/api/apiClient";
 
 type DeleteActionDialogProps = {
   /** Either provide onDelete OR resource + id */
@@ -55,7 +56,6 @@ export default function DeleteActionDialog({
       if (onDelete) return onDelete();
       if (!resource || !id)
         throw new Error("DeleteActionDialog: missing delete handler");
-      const { default: apiClient } = await import("@/api/apiClient");
       return apiClient.delete(`/${resource}/${id}`);
     },
     onSuccess: () => {
