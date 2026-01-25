@@ -45,7 +45,7 @@ export default async function AdminBrandsPage({
         </div>
 
         <a
-          href="/admin/dashboard/products/add"
+          href="/admin/dashboard/brands/add"
           className="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
           + Add Brand
