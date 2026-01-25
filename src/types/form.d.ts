@@ -3,6 +3,7 @@ export type FieldType =
   | "number"
   | "textarea"
   | "select"
+  | "multi-select"
   | "switch"
   | "file"
   | "hidden";
