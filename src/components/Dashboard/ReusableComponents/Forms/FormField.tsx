@@ -11,6 +11,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { FormFieldConfig } from "@/types/form";
 import { FileInput } from "./FileInput";
+import MultipleSelector from "@/components/ui/multi-select";
 
 export default function FormField<T>({
   field,
@@ -48,6 +49,20 @@ export default function FormField<T>({
           name={name as string}
           defaultValue={defaultValue}
           className="border-indigo-600 focus-visible:ring-2 focus-visible:ring-indigo-600/50 focus-visible:border-indigo-600/50"
+        />
+      )}
+
+      {type === "multi-select" && (
+        <MultipleSelector
+          commandProps={{
+            label,
+          }}
+          defaultOptions={options}
+          placeholder={placeholder}
+          emptyIndicator={
+            <p className="text-center text-sm">No results found</p>
+          }
+          className="data-[state=checked]:bg-indigo-100 data-[state=checked]:text-indigo-900 data-[highlighted]:bg-indigo-50 data-[highlighted]:text-indigo-900"
         />
       )}
 
