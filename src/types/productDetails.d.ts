@@ -1,7 +1,7 @@
 export type Review = {
-  _id: string;
+  id: string;
   user: {
-    _id: string;
+    id: string;
     name: string;
     photo: string;
   };
@@ -12,7 +12,7 @@ export type Review = {
 };
 
 type ProductDetails = {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   price: number;

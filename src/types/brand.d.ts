@@ -1,5 +1,5 @@
 export interface Brand {
-  _id: string;
+  id: string;
   title: string;
   createdAt: string;
   image: string;

@@ -1,11 +1,11 @@
 export interface TopCheapProduct {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   price: number;
   imageCover: string;
   brand: {
-    _id: string;
+    id: string;
     title: string;
     createdAt: string;
   };
@@ -14,13 +14,13 @@ export interface TopCheapProduct {
 }
 
 export interface Product {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   price: number;
   imageCover: string;
   brand: {
-    _id: string;
+    id: string;
     title: string;
     createdAt: string;
   };
@@ -29,7 +29,7 @@ export interface Product {
   id: string;
   images: string[];
   category: {
-    _id: string;
+    id: string;
     title: string;
     createdAt: string;
   };
