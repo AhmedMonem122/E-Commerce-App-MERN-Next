@@ -66,7 +66,7 @@ export default async function HomeCategories() {
         {/* Categories */}
         {categories &&
           categories.map((category: Category) => (
-            <Link key={category._id} href={`/categories/${category._id}`}>
+            <Link key={category.id} href={`/categories/${category.id}`}>
               <Card
                 className="
                   group 

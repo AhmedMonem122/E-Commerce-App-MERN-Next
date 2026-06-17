@@ -28,7 +28,7 @@ export default async function AddBrandPage() {
             type: "multi-select",
             options: products.map((p: Product) => ({
               label: p.title,
-              value: p._id,
+              value: p.id,
             })),
             placeholder: "Select products",
           },
@@ -38,7 +38,7 @@ export default async function AddBrandPage() {
             type: "select",
             options: categories.map((c: Category) => ({
               label: c.title,
-              value: c._id,
+              value: c.id,
             })),
             placeholder: "Select a category",
           },

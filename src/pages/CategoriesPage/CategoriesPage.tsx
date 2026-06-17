@@ -112,7 +112,7 @@ export default function CategoriesPage() {
             <SelectContent>
               <SelectItem value="all">All Brands</SelectItem>
               {brands?.data?.brands?.map((b: Brand) => (
-                <SelectItem key={b._id} value={b._id}>
+                <SelectItem key={b.id} value={b.id}>
                   {b.title}
                 </SelectItem>
               ))}
@@ -152,8 +152,8 @@ export default function CategoriesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {categories.map((category) => (
                 <Link
-                  key={category._id}
-                  href={`/categories/${category._id}`}
+                  key={category.id}
+                  href={`/categories/${category.id}`}
                   className="group"
                 >
                   <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white rounded-xl">

@@ -67,7 +67,7 @@ export default async function EditProductPage({ params }: ProductDetailsProps) {
             type: "select",
             options: brands.map((b: Brand) => ({
               label: b.title,
-              value: b._id,
+              value: b.id,
             })),
             placeholder: "Select a brand",
             defaultValue: product?.brand,
@@ -78,7 +78,7 @@ export default async function EditProductPage({ params }: ProductDetailsProps) {
             type: "select",
             options: categories.map((c: Category) => ({
               label: c.title,
-              value: c._id,
+              value: c.id,
             })),
             placeholder: "Select a category",
             defaultValue: product?.category,

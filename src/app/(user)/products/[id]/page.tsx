@@ -19,7 +19,7 @@ async function fetchProduct(id: string): Promise<ProductDetails | null> {
   try {
     const api = await apiServer();
     const { data } = await api.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/${id}`,
     );
     return data?.data?.product || null;
   } catch {
@@ -31,7 +31,7 @@ async function fetchBrand(id: string): Promise<Brand | null> {
   try {
     const api = await apiServer();
     const { data } = await api.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/brands/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/brands/${id}`,
     );
     return data?.data?.brand || null;
   } catch {
@@ -43,7 +43,7 @@ async function fetchCategory(id: string): Promise<Category | null> {
   try {
     const api = await apiServer();
     const { data } = await api.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories/${id}`,
     );
     return data?.data?.category || null;
   } catch {
@@ -178,7 +178,7 @@ export default async function ProductDetailsPage({
             </div>
           }
         >
-          <ProductReviews productId={product._id} product={product} />
+          <ProductReviews productId={product.id} product={product} />
         </Suspense>
       </section>
     </main>

@@ -95,17 +95,17 @@ export default function ProductsTable({
           actions={[
             {
               icon: <Eye className="h-4 w-4" />,
-              href: (p) => `/products/${p._id}`,
+              href: (p) => `/products/${p.id}`,
             },
             {
               icon: <Pencil className="h-4 w-4" />,
-              href: (p) => `/admin/dashboard/products/edit/${p._id}`,
+              href: (p) => `/admin/dashboard/products/edit/${p.id}`,
             },
             {
               render: (p) => (
                 <DeleteActionDialog
                   resource="products"
-                  id={p._id}
+                  id={p.id}
                   invalidateKey={["products"]}
                   title="Delete product?"
                   onSuccessMessage="Product deleted"

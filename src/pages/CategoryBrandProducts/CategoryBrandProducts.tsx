@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Product {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   price: number;
@@ -44,7 +44,7 @@ export default function CategoryBrandProducts({
       "
       >
         {products.map((product) => (
-          <Link key={product._id} href={`/products/${product._id}`}>
+          <Link key={product.id} href={`/products/${product.id}`}>
             <Card
               className="
                 group 

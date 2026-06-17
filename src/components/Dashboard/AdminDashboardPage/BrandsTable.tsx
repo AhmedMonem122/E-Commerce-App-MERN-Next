@@ -83,17 +83,17 @@ export default function BrandsTable({ initialData }: { initialData: Brand[] }) {
           actions={[
             {
               icon: <Eye className="h-4 w-4" />,
-              href: (p) => `/brands/${p._id}`,
+              href: (p) => `/brands/${p.id}`,
             },
             {
               icon: <Pencil className="h-4 w-4" />,
-              href: (p) => `/admin/dashboard/brands/edit/${p._id}`,
+              href: (p) => `/admin/dashboard/brands/edit/${p.id}`,
             },
             {
               render: (p) => (
                 <DeleteActionDialog
                   resource="brands"
-                  id={p._id}
+                  id={p.id}
                   invalidateKey={["brands"]}
                   title="Delete brand?"
                   onSuccessMessage="Brand deleted"

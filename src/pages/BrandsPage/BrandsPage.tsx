@@ -102,7 +102,7 @@ export default function BrandsPage() {
           <SelectContent className="max-h-64">
             <SelectItem value="all">All Categories</SelectItem>
             {categories?.data?.categories?.map((cat: Category) => (
-              <SelectItem key={cat._id} value={cat._id}>
+              <SelectItem key={cat.id} value={cat.id}>
                 {cat.title}
               </SelectItem>
             ))}
@@ -162,7 +162,7 @@ export default function BrandsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {brands.map((brand) => (
-                <Link key={brand._id} href={`/brands/${brand._id}`}>
+                <Link key={brand.id} href={`/brands/${brand.id}`}>
                   <Card className="h-60 group relative overflow-hidden border hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     <CardContent className="flex flex-col items-center justify-center p-6 text-center">
                       <div className="w-24 h-24 relative mb-4 group-hover:scale-110 transition-transform duration-300">

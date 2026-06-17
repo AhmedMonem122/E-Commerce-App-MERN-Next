@@ -122,7 +122,7 @@ export default function OurProducts() {
               </Card>
             ))
           : products.map((product) => (
-              <Link key={product._id} href={`/products/${product._id}`}>
+              <Link key={product.id} href={`/products/${product.id}`}>
                 <Card
                   className="
                     group 

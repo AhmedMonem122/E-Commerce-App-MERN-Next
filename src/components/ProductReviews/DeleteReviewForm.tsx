@@ -27,7 +27,7 @@ const DeleteReviewForm = ({
 
   return (
     <form action={formAction}>
-      <input type="hidden" name="reviewId" value={review._id} />
+      <input type="hidden" name="reviewId" value={review.id} />
 
       <Button variant="destructive" size="sm" className="px-4">
         Delete

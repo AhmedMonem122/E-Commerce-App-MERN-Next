@@ -32,7 +32,7 @@ const EditReviewForm = ({
 
   return (
     <form action={formAction} className="flex-1 space-y-3">
-      <input type="hidden" name="reviewId" value={review._id} />
+      <input type="hidden" name="reviewId" value={review.id} />
 
       <Input
         type="number"

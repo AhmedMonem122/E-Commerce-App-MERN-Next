@@ -35,7 +35,7 @@ export default async function BestDeals() {
         {/* Product Cards */}
         {products &&
           products.map((product) => (
-            <Link key={product._id} href={`/products/${product._id}`}>
+            <Link key={product.id} href={`/products/${product.id}`}>
               <Card className="group cursor-pointer rounded-xl overflow-hidden border bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 {/* Product Image */}
                 <div className="relative w-full h-48 overflow-hidden">

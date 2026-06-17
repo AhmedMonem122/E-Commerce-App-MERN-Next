@@ -32,7 +32,7 @@ export default function ProductReviews({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {product.reviews?.map((review: Review) => (
           <Card
-            key={review._id}
+            key={review.id}
             className="rounded-xl shadow-md border border-gray-200 hover:shadow-lg transition-all bg-white"
           >
             <CardContent className="p-6 space-y-4">

@@ -32,7 +32,7 @@ const ReactReviewForm = ({
 
   return (
     <form action={formAction}>
-      <input type="hidden" name="reviewId" value={review._id} />
+      <input type="hidden" name="reviewId" value={review.id} />
       <input type="hidden" name="reactions" value={reaction} />
 
       <Button

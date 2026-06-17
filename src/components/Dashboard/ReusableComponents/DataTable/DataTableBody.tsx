@@ -3,13 +3,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RowAction, TableHeaderConfig } from "@/types/data-table";
 
-type Props<T extends { _id?: string }> = {
+type Props<T extends { id?: string }> = {
   data: T[];
   headers: TableHeaderConfig<T>[];
   actions?: RowAction<T>[];
 };
 
-export function DataTableBody<T extends { _id?: string }>({
+export function DataTableBody<T extends { id?: string }>({
   data,
   headers,
   actions,
@@ -17,14 +17,14 @@ export function DataTableBody<T extends { _id?: string }>({
   return (
     <TableBody>
       {data.map((row, index) => (
-        <TableRow key={row._id ?? index}>
+        <TableRow key={row.id ?? index}>
           {headers.map((header, i) => (
             <TableCell key={i}>
               {header.render
                 ? header.render(row)
                 : header.key
-                ? String(row[header.key] ?? "")
-                : null}
+                  ? String(row[header.key] ?? "")
+                  : null}
             </TableCell>
           ))}
 

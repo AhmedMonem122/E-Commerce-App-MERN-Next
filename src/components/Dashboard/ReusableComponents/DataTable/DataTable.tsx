@@ -4,7 +4,7 @@ import { DataTableBody } from "./DataTableBody";
 import { TableHeaderConfig, RowAction } from "@/types/data-table";
 import DataTableSkeleton from "./DataTableSkeleton";
 
-type Props<T extends { _id?: string }> = {
+type Props<T extends { id?: string }> = {
   headers: TableHeaderConfig<T>[];
   data: T[];
   actions?: RowAction<T>[];
@@ -14,7 +14,7 @@ type Props<T extends { _id?: string }> = {
   skeletonRows?: number;
 };
 
-export function DataTable<T extends { _id?: string }>({
+export function DataTable<T extends { id?: string }>({
   headers,
   data,
   actions,

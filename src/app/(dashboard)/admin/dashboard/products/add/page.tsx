@@ -33,7 +33,7 @@ export default async function AddProductPage() {
             type: "select",
             options: brands.map((b: Brand) => ({
               label: b.title,
-              value: b._id,
+              value: b.id,
             })),
             placeholder: "Select a brand",
           },
@@ -43,7 +43,7 @@ export default async function AddProductPage() {
             type: "select",
             options: categories.map((c: Category) => ({
               label: c.title,
-              value: c._id,
+              value: c.id,
             })),
             placeholder: "Select a category",
           },
