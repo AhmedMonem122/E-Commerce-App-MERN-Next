@@ -24,12 +24,12 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (user?.role === "admin" && request.nextUrl.pathname.startsWith("/user")) {
+  if (user?.role === "admin" && request.nextUrl.pathname.startsWith("/USER")) {
     loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   } else if (
     user?.role === "user" &&
-    request.nextUrl.pathname.startsWith("/admin")
+    request.nextUrl.pathname.startsWith("/ADMIN")
   ) {
     loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
